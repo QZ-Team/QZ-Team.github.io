@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"blog.rizhan.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="测试环境准备实验环境：DC (10.10.10.10)  windows server 2012 R2 Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18  辅助DC (10.10.10.20) 攻击机IP (10.10.10.142)  域：c0okb.cn （域用户：&amp;#116;&amp;#101;&amp;#x73;">
+  <meta name="description" content="测试环境准备实验环境：DC (10.10.10.10)  windows server 2012 R2 Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18  辅助DC (10.10.10.20) 攻击机IP (10.10.10.142)  域：c0okb.cn （域用户：&amp;#116;&amp;#101;&amp;#115;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Exchange渗透总结">
 <meta property="og:url" content="https://blog.rizhan.icu/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="奇安信Z-Team技术博客">
-<meta property="og:description" content="测试环境准备实验环境：DC (10.10.10.10)  windows server 2012 R2 Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18  辅助DC (10.10.10.20) 攻击机IP (10.10.10.142)  域：c0okb.cn （域用户：&amp;#116;&amp;#101;&amp;#x73;">
+<meta property="og:description" content="测试环境准备实验环境：DC (10.10.10.10)  windows server 2012 R2 Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18  辅助DC (10.10.10.20) 攻击机IP (10.10.10.142)  域：c0okb.cn （域用户：&amp;#116;&amp;#101;&amp;#115;">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/1.png">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/2.png">
@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/21.png">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/22.png">
 <meta property="article:published_time" content="2021-08-06T13:40:35.000Z">
-<meta property="article:modified_time" content="2021-08-06T13:45:59.699Z">
+<meta property="article:modified_time" content="2021-08-06T15:06:30.538Z">
 <meta property="article:author" content="QAX Z-Team">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.rizhan.icu/attach/image/1.png">
@@ -207,7 +207,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-06 21:40:35 / Modified: 21:45:59" itemprop="dateCreated datePublished" datetime="2021-08-06T21:40:35+08:00">2021-08-06</time>
+              <time title="Created: 2021-08-06 21:40:35 / Modified: 23:06:30" itemprop="dateCreated datePublished" datetime="2021-08-06T21:40:35+08:00">2021-08-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,6 +220,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -234,7 +241,8 @@
 <p>Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18 </p>
 <p>辅助DC (10.10.10.20)</p>
 <p>攻击机IP (10.10.10.142) </p>
-<p>域：c0okb.cn （域用户：<a href="mailto:&#116;&#101;&#x73;&#116;&#x4d;&#101;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#x6f;&#x6b;&#98;&#46;&#99;&#110;">&#116;&#101;&#x73;&#116;&#x4d;&#101;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#x6f;&#x6b;&#98;&#46;&#99;&#110;</a>，<a href="mailto:&#97;&#100;&#109;&#105;&#x6e;&#105;&#x73;&#x74;&#114;&#97;&#x74;&#x6f;&#x72;&#x40;&#99;&#x30;&#x6f;&#107;&#x62;&#46;&#99;&#x6e;">&#97;&#100;&#109;&#105;&#x6e;&#105;&#x73;&#x74;&#114;&#97;&#x74;&#x6f;&#x72;&#x40;&#99;&#x30;&#x6f;&#107;&#x62;&#46;&#99;&#x6e;</a>）</p>
+<p>域：c0okb.cn （域用户：<a href="mailto:&#116;&#101;&#115;&#116;&#x4d;&#x65;&#x6d;&#x62;&#101;&#x72;&#64;&#x63;&#x30;&#x6f;&#107;&#98;&#x2e;&#x63;&#110;">&#116;&#101;&#115;&#116;&#x4d;&#x65;&#x6d;&#x62;&#101;&#x72;&#64;&#x63;&#x30;&#x6f;&#107;&#98;&#x2e;&#x63;&#110;</a>，<a href="mailto:&#x61;&#100;&#x6d;&#105;&#110;&#105;&#115;&#116;&#114;&#97;&#x74;&#x6f;&#x72;&#64;&#99;&#x30;&#x6f;&#107;&#98;&#46;&#99;&#110;">&#x61;&#100;&#x6d;&#105;&#110;&#105;&#115;&#116;&#114;&#97;&#x74;&#x6f;&#x72;&#64;&#99;&#x30;&#x6f;&#107;&#98;&#46;&#99;&#110;</a>）</p>
+<span id="more"></span>
 <h1 id="发现Exchange"><a href="#发现Exchange" class="headerlink" title="发现Exchange"></a>发现Exchange</h1><h2 id="利用端口扫描"><a href="#利用端口扫描" class="headerlink" title="利用端口扫描"></a>利用端口扫描</h2><p><img src="/attach/image/1.png" alt="image-20210803172815811"></p>
 <p><img src="/attach/image/2.png" alt="image-20210803172933492"></p>
 <h2 id="特殊后缀"><a href="#特殊后缀" class="headerlink" title="特殊后缀"></a>特殊后缀</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">https://ServerAddress/AutoDiscover/  该接口能用于爆破账号密码</span><br><span class="line">用于自动配置用户在Outlook中邮箱的相关设置，简化用户登陆使用邮箱的流程</span><br><span class="line"></span><br><span class="line">https://ServerAddress/Ecp/  </span><br><span class="line">管理员用于管理组织中的Exchange的Web控制台</span><br><span class="line"></span><br><span class="line">https://ServerAddress/EWS/  该接口能用于爆破账号密码</span><br><span class="line">实现客户端与服务端之间基于HTTP的SOAP交互</span><br><span class="line"></span><br><span class="line">https://ServerAddress/mapi/</span><br><span class="line"></span><br><span class="line">https://ServerAddress/Microsoft-Server-ActiveSync/  该接口能用于爆破账号密码</span><br><span class="line">用于移动应用程序访问电子邮件</span><br><span class="line"></span><br><span class="line">https://ServerAddress/OAB/</span><br><span class="line">用于为Outlook客户端提供地址簿的副本，减轻Exchange的负担</span><br><span class="line"></span><br><span class="line">https://ServerAddress/OWA/ 该接口能用于爆破账号密码</span><br><span class="line">用于通过web应用程序访问邮件、日历、任务和联系人等</span><br><span class="line"></span><br><span class="line">https://ServerAddress/PowerShell/</span><br><span class="line">用于服务器管理的Exchange管理控制台</span><br><span class="line"></span><br><span class="line">https://ServerAddress/Rpc/  </span><br></pre></td></tr></table></figure>
@@ -543,6 +551,26 @@
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
