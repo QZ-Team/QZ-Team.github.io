@@ -20,28 +20,47 @@
     var CONFIG = {"hostname":"blog.rizhan.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="奇安信Z-Team技术博客">
-<meta property="og:url" content="https://blog.rizhan.icu/index.html">
+  <meta name="description" content="1.前言​        在红队评估中，木马的免杀效果往往决定了一次完美的钓鱼的成功与否，当然这里不仅仅是钓鱼，木马是我们最常用的一种权限维持的手段。而cs生成木马免杀更是老生常谈的话题，cs 生成的shellcode ，最常用的免杀手段就是，加载器和shellcode分离，在过静态一直保持着较高的成功免杀概率。 ​        为啥说免杀概率？总所周知，免杀一直都有着很玄学的色彩，当然这也是和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存加载CS-Stageless进行免杀">
+<meta property="og:url" content="https://blog.rizhan.icu/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/index.html">
 <meta property="og:site_name" content="奇安信Z-Team技术博客">
+<meta property="og:description" content="1.前言​        在红队评估中，木马的免杀效果往往决定了一次完美的钓鱼的成功与否，当然这里不仅仅是钓鱼，木马是我们最常用的一种权限维持的手段。而cs生成木马免杀更是老生常谈的话题，cs 生成的shellcode ，最常用的免杀手段就是，加载器和shellcode分离，在过静态一直保持着较高的成功免杀概率。 ​        为啥说免杀概率？总所周知，免杀一直都有着很玄学的色彩，当然这也是和">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802130856649.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802142031811.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802142815754.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802145401013.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802145732532.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802145919858.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802153919447.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802155559972.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802155802850.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210802160023123.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803134548753.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803135321611.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803140124552.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803141425235.png">
+<meta property="article:published_time" content="2021-08-06T13:10:48.000Z">
+<meta property="article:modified_time" content="2021-08-06T13:14:42.084Z">
 <meta property="article:author" content="QAX Z-Team">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.rizhan.icu/attach/image/image-20210802130856649.png">
 
-<link rel="canonical" href="https://blog.rizhan.icu/">
+<link rel="canonical" href="https://blog.rizhan.icu/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>奇安信Z-Team技术博客</title>
+  <title>内存加载CS-Stageless进行免杀 | 奇安信Z-Team技术博客</title>
   
 
 
@@ -150,9 +169,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -168,10 +188,9 @@
       <meta itemprop="name" content="奇安信Z-Team技术博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/" class="post-title-link" itemprop="url">内存加载CS-Stageless进行免杀</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          内存加载CS-Stageless进行免杀
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -204,7 +223,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>​        在红队评估中，木马的免杀效果往往决定了一次完美的钓鱼的成功与否，当然这里不仅仅是钓鱼，木马是我们最常用的一种权限维持的手段。而cs生成木马免杀更是老生常谈的话题，cs 生成的shellcode ，最常用的免杀手段就是，加载器和shellcode分离，在过静态一直保持着较高的成功免杀概率。</p>
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>​        在红队评估中，木马的免杀效果往往决定了一次完美的钓鱼的成功与否，当然这里不仅仅是钓鱼，木马是我们最常用的一种权限维持的手段。而cs生成木马免杀更是老生常谈的话题，cs 生成的shellcode ，最常用的免杀手段就是，加载器和shellcode分离，在过静态一直保持着较高的成功免杀概率。</p>
 <p>​        为啥说免杀概率？总所周知，免杀一直都有着很玄学的色彩，当然这也是和杀软复杂的检测机制有关，主要是杀软都是不开源的，我们测试免杀性都是通过黑盒测试，只能一个个去试，去猜测免杀机制！</p>
 <p>​        cs前置的shellcode是很好免杀的，通过加密解密，加载器分离的方式是很轻松免杀的，但是在常和杀软作对抗，逐渐发现，杀软主要特征定位在前置shellcode下载回来大的beacon，这个特征我们除非去魔改生产beacon文件的dll文件，不然无法有效的去除这一特征。</p>
 <p>​        但是前段时间我接触了pe内存加载技术，所以我在想能不能直接写一个内存加载器然后直接加载生成的stageless，而不用前置的shellcode去下载大的beacon回来，这样能逃过一些特征，内存加载不是新技术，因为我们是时常接触到c#内存加载.net程序，这里我们改用c++实现内存加载。</p>
@@ -265,154 +284,47 @@
 <p>3.把异或好的shellcode放入资源，然后再释放，可能还是会存在一些行为，毕竟这是木马常用的手段。</p>
 <p>4.pe加载器还可以不断提取，优化，做到定制化的生成木马工具。</p>
 
-      
     </div>
 
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>西部基地
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://blog.rizhan.icu/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/" title="内存加载CS-Stageless进行免杀">https://blog.rizhan.icu/2021/08/06/内存加载CS-Stageless进行免杀/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="QAX Z-Team">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="奇安信Z-Team技术博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/" class="post-title-link" itemprop="url">利用代码审计突破网络隔离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-06 19:05:51 / Modified: 19:35:01" itemprop="dateCreated datePublished" datetime="2021-08-06T19:05:51+08:00">2021-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">实战项目</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">代码审计</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>​        一次红队项目中，通过反序列化拿下入口点webshell，经过信息收集发现该机器在dmz区域，且c段内只有一台机器，猜测应该是防火墙做了连接限制，如果突破不了dmz区域，这个点就毫无作用。后续对webshell进行本机信息收集，发现了一个感兴趣的进程”b*agent.exe”,通过检索该进程配置文件定位到该agent服务端，经过测试连接，竟然能直接跨网段访问到it运维人员用于监控网络资产的设备主页，从设备的用途上可以分析出大概率这台设备的ACL很好，经过坚持不懈的努力成功登陆（不要问，问就是弱口令），通过监控面板看到了很多其他网段的关键主机和设备，如果能打下来这个监控设备的点，就能突破网络隔离，去探索新世界了！</p>
-<p>​        黑盒测过没发现能直接打死的漏洞，只能走上找寻源码的不归路。通过fofa、google搜了下，公网用的还不少，但打旁站或者供应商成本过于大，结合在供应商主页找到了设备的系统名称，拿着关键字最后在某盘找到了几套与目标版本比较近的安装包 ：）</p>
-<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><p>​        安装完之后，导出代码到IDEA，SpringMVC的，正常走一遍代码审计流程，web.xml下没有能直接RCE的，查看第三方jar包也没有能利用的，那就看看路由吧！</p>
-<h4 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h4><p>path参数可控，response直接返回了FileInputStream</p>
-<p><img src="/attach/image/image-20210805131225117.png" alt="image-20210805131225117"></p>
-<p><img src="/attach/image/image-20210805132220649.png" alt="image-20210805132220649"></p>
-<p>入口点如下：</p>
-<p><img src="/attach/image/image-20210804120050819.png" alt="image-20210804120050819"></p>
-<p>​        路由 “/testDataBaseConn” 传入传参DataBaseConfigPojo类调用testDataBaseConn方法，DataBaseConfigPojo类中定义了getter/setter方法，用来获取ip、端口、配置项等。</p>
-<p><img src="/attach/image/image-20210804121402518.png" alt="image-20210804121402518"></p>
-<p>testDataBaseConn 方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//DataBaseConfigPojo实体类，获得整个url以及ip、端口的getter/setter等</span><br><span class="line">private void testDataBaseConn(DataBaseConfigPojo dbConfPojo) throws Exception &#123;</span><br><span class="line">    //初始化数据库连接</span><br><span class="line">    Connection t_conn = null;</span><br><span class="line">    Statement t_stmt = null;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">        //t_url是数据库连接的格式，替换ip、端口、名称到t_url</span><br><span class="line">        //这里的t_url我们就可以控制他的连接ip、端口、配置项了</span><br><span class="line">        String t_url = dbConfPojo.getUrlTemplate().replace(&quot;&#123;0&#125;&quot;, dbConfPojo.getIp()).replace(&quot;&#123;1&#125;&quot;, dbConfPojo.getPort()).replace(&quot;&#123;2&#125;&quot;, dbConfPojo.getName());</span><br><span class="line">        Class.forName(dbConfPojo.getDriver());</span><br><span class="line">        S_LOGGER.info(&quot;Successfully download JDBC!&quot;);</span><br><span class="line">        //使用t_url的内容连接数据库，触发漏洞</span><br><span class="line">        t_conn = DriverManager.getConnection(t_url, dbConfPojo.getUser(), dbConfPojo.getPassword());</span><br><span class="line">        S_LOGGER.info(&quot;Successfully connect to DB!&quot;);</span><br><span class="line">        t_stmt = t_conn.createStatement();</span><br><span class="line">        t_stmt.executeQuery(&quot;Select count(*) from &quot; + dbConfPojo.getTableName());</span><br><span class="line">    &#125; catch (SQLException var8) &#123;</span><br><span class="line">        S_LOGGER.error(&quot;testDataBaseConn&quot;, var8);</span><br><span class="line">        throw var8;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        t_stmt.close();</span><br><span class="line">        t_conn.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>可以看到ip、host、配置项我们都可以控制，只要目标能够连接到恶意Mysql服务器就可以实现反序列化。</p>
-<h3 id="JDBC简介"><a href="#JDBC简介" class="headerlink" title="JDBC简介"></a>JDBC简介</h3><p>JDBC（Java DataBase Connectivity）即Java数据库连接，是Java语言中用来规范客户端程序如何来访问数据库的应用程序接口，提供了诸如查询和更新数据库中数据的方法。</p>
-<p>一般格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc://driver://host:port/database?配置name1=配置Value1&amp;配置name2=配置Value2</span><br></pre></td></tr></table></figure>
-
-<h3 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>如果攻击者能够控制JDBC连接设置项，那么就可以通过设置其指向恶意MySQL服务器进行ObjectInputStream.readObject()的反序列化攻击从而RCE。</p>
-<p>具体点说，就是通过JDBC连接MySQL服务端时，会有几个内置的SQL查询语句要执行，其中两个查询的结果集在MySQL客户端被处理时会调用ObjectInputStream.readObject()进行反序列化操作。如果攻击者搭建恶意MySQL服务器来控制这两个查询的结果集，并且攻击者可以控制JDBC连接设置项，那么就能触发MySQL JDBC客户端反序列化漏洞。</p>
-<p>可被利用的两条查询语句：</p>
-<ul>
-<li>SHOW SESSION STATUS</li>
-<li>SHOW COLLATION</li>
-</ul>
-<p>说通俗点，就是在目标可以连接到恶意MySQL服务器的前提下，host、post、配置项可控，就可以触发Mysql反序列化。</p>
-<h3 id="漏洞范围"><a href="#漏洞范围" class="headerlink" title="漏洞范围"></a>漏洞范围</h3><p>mysql-connector-java &lt; 5.1.49</p>
-<p>mysql-connector-java-6.x</p>
-<p>mysql-connector-java &lt; 8.0.20</p>
-<h3 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h3><p>​        恶意Mysql服务器搭建：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/fnmsd/MySQL_Fake_Server">https://github.com/fnmsd/MySQL_Fake_Server</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/rmb122/rogue_mysql_server">https://github.com/rmb122/rogue_mysql_server</a></li>
-</ul>
-<h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>构造恶意Mysql服务器，以fnmsd的工具为例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com.cnpmjs.org/fnmsd/MySQL_Fake_Server.git</span><br></pre></td></tr></table></figure>
-
-<p>修改 config.json</p>
-<p><img src="/attach/image/image-20210804134351391.png" alt="image-20210804134351391"></p>
-<p>启动服务</p>
-<p><img src="/attach/image/image-20210804134439332.png" alt="image-20210804134439332"></p>
-<p>发包，MySQL_Fake_Server通过user来选择payload，这里使用URLDNS来确定是否存在漏洞</p>
-<p><img src="/attach/image/image-20210804141942664.png" alt="image-20210804141942664"></p>
-<p>Dnslog有回显，现在就找个反序列化链直接打就可以了</p>
-<p><img src="/attach/image/image-20210804142021591.png" alt="image-20210804142021591"></p>
-<p>查看lib包，有一条CC10的链<img src="/attach/image/image-20210804173310667.png" alt="image-20210804173310667"></p>
-<p>重新配置config.json 。</p>
-<p><img src="/attach/image/image-20210804175451690.png" alt="image-20210804175451690"></p>
-<p>user参数修改成config.json中自定义的参数，目标出网，可利用CC10执行系统命令，直接上线cs一发入魂</p>
-<p><img src="/attach/image/image-20210805143151394.png" alt="image-20210804175624951"></p>
-<p>接着就可以去探索新世界了！</p>
-<p><img src="/attach/image/image-20210804175841322.png" alt="image-20210804175841322"></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li><p> 登陆设备</p>
-</li>
-<li><p> 找到源码</p>
-</li>
-<li><p> 代码审计发现Mysql反序列化</p>
-</li>
-<li><p> 漏洞利用</p>
-</li>
-</ol>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/" rel="prev" title="利用代码审计突破网络隔离">
+      <i class="fa fa-chevron-left"></i> 利用代码审计突破网络隔离
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -465,6 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">1.前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">2.实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%A6%96%E5%85%88%E6%98%AF%E6%8A%8A%E6%88%91%E4%BB%ACcs%E7%94%9F%E6%88%90%E7%9A%84stageless-exe%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E6%88%90%E5%8F%AF%E5%9C%A8%E5%86%85%E5%AD%98%E6%89%A7%E8%A1%8C%E7%9A%84shellcode"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.首先是把我们cs生成的stageless exe文件转换成可在内存执行的shellcode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%8A%8A%E8%BD%AC%E6%8D%A2%E5%A5%BD%E7%9A%84exe%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E6%88%9016%E8%BF%9B%E5%88%B6shellcode"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.把转换好的exe文件转换成16进制shellcode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8A%A0%E5%AF%8616%E8%BF%9B%E5%88%B6%EF%BC%8C%E6%88%91%E8%BF%99%E9%87%8C%E9%87%87%E7%94%A8%E4%BD%BF%E7%94%A8%E5%BC%82%E6%88%96%E5%8A%A0%E5%AF%86%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%8C%E6%88%91%E5%8F%AA%E6%8F%90%E4%BE%9B%E4%B8%80%E4%B8%AA%E6%80%9D%E8%B7%AF"><span class="nav-number">2.0.3.</span> <span class="nav-text">3.加密16进制，我这里采用使用异或加密的方式，我只提供一个思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%94%B9%E9%80%A0runshc64-exe"><span class="nav-number">2.0.4.</span> <span class="nav-text">4.改造runshc64.exe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%8A%8Atxt%E6%96%87%E4%BB%B6%E6%B7%BB%E5%8A%A0%E5%85%A5%E8%B5%84%E6%BA%90%EF%BC%8C%E9%80%9A%E8%BF%87%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E8%BF%9B%E8%A1%8C%E5%8A%A0%E8%BD%BD%EF%BC%8C%E5%8A%A0%E8%BD%BD%E5%AE%8C%E5%B0%B1%E5%88%A0"><span class="nav-number">2.0.5.</span> <span class="nav-text">5.把txt文件添加入资源，通过释放资源的方式来进行加载，加载完就删</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%9D%E8%80%83%E4%B8%8E%E6%94%B9%E8%BF%9B%E4%B9%8B%E5%A4%84"><span class="nav-number">3.</span> <span class="nav-text">3.思考与改进之处</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
