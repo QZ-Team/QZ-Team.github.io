@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-09 11:29:26 / Modified: 11:38:57" itemprop="dateCreated datePublished" datetime="2021-08-09T11:29:26+08:00">2021-08-09</time>
+              <time title="Created: 2021-08-09 11:29:26 / Modified: 11:42:50" itemprop="dateCreated datePublished" datetime="2021-08-09T11:29:26+08:00">2021-08-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -205,55 +205,14 @@
 
       
           <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。</p>
-<h3 id="RDP会话劫持"><a href="#RDP会话劫持" class="headerlink" title="RDP会话劫持"></a>RDP会话劫持</h3><p>​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。正常情况下，切换会话时需要提供登录密码，但在SYSTEM权限下可够绕过验证，无密码实现未授权登录。</p>
-<p>​    RDP劫持是要在system权限下进行的，如果有密码的话也可以不用system，我一般用psexec提到system下，也可以用shift的com劫持，这样从3389外面登录框就是system，或者计划任务等都可以。</p>
-<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>​    本次项目是通过之前内网的信息收集，获取到了一个域内高权限用户，这个用户之前是域管用户组里的，不过被移除组外但是权限还在并可以登录域内300多台windows服务器，本次会话劫持就是用在其中的服务器上。</p>
-<h4 id="劫持-x-x-x-8服务器的会话"><a href="#劫持-x-x-x-8服务器的会话" class="headerlink" title="劫持 x.x.x.8服务器的会话"></a>劫持 x.x.x.8服务器的会话</h4><p>​    在x.x.x.11（与vcenter同B段）导出的域内高权限用户账号密码，然后在此机器上做了二层代理，扫描了这个B段可登录300多台服务器，包括且不限于Vcenter服务器、集团oa服务器、数据中心ldap服务器等。使用之前获取到的域内高权限用户登录<strong>vmware vcenter服务器</strong>x.x.x.8。</p>
-<p>​    <img src="/attach/image/image-20210803111518787.png" alt="image-20210803111518787"></p>
-<p>​    登录后发现目标机器上有vcenter，并且有多个vcenter管理员登录还未注销，这里就想到韬哥之前分享过rdp会话劫持技术，于是在韬哥的帮助下有了后面的成果。</p>
-<p>​    <strong>首先执行quser 或者 qwinsta 查看会话id</strong>，这里运气比较好刚好碰到几个还没注销的vc管理员用户，劫持后可以切到他的桌面，注销三天内的也可以劫持。</p>
-<p><img src="/attach/image/image-20210803143858228.png" alt="image-20210803143858228"></p>
-<p><strong>劫持vcenter管理员（vcxxx）会话</strong></p>
-<p>得先提权限到system权限，这里我使用的psexec</p>
-<p><strong>将psexec.exe复制到System32文件夹下(64位用户请将psexec64.exe复制到SysWOW64文件夹下)，然后以管理员身份运行命令提示符，输入”psexec -i -d -s cmd.exe”(64位用户类似)</strong> ，运行命令后会重新弹出窗口，执行whoami会是system权限。</p>
-<p><img src="/attach/image/image-20210803145614581.png" alt="image-20210803145614581"></p>
-<p>**<code>tscon + 要劫持的会话ID + /DEST:你的会话名</code>**，执行完就会切到你劫持会话的桌面。</p>
-<p><img src="/attach/image/image-20210803144817625.png" alt="image-20210803144817625"></p>
-<p><img src="/attach/image/image-20210803150610889.png" alt="image-20210803150610889"></p>
-<h5 id="用劫持后的vcxxx用户权限登录-vcenter-x-x-x-171-服务器485台机器可控"><a href="#用劫持后的vcxxx用户权限登录-vcenter-x-x-x-171-服务器485台机器可控" class="headerlink" title="用劫持后的vcxxx用户权限登录 vcenter x.x.x.171 服务器485台机器可控"></a>用劫持后的vcxxx用户权限登录 vcenter x.x.x.171 服务器485台机器可控</h5><p>​    因为有登录服务器的ip记录，这里就先登录了x.x.x.171服务器的vcenter。vcenter可以直接通过本地凭证登录，所以劫持vcenter管理员的会话是至关重要的一步。</p>
-<p>​    通过vcenter可直接连接机器,可控机器开关机,可拷贝机器镜像抓取hash。</p>
-<p><img src="/attach/image/image-20210803153841797.png" alt="image-20210803153841797"></p>
-<p><img src="/attach/image/image-20210803154050853.png" alt="image-20210803154050853"></p>
-<h5 id="vcenter-x-x-x-8-服务器1369台机器可控"><a href="#vcenter-x-x-x-8-服务器1369台机器可控" class="headerlink" title="vcenter x.x.x.8 服务器1369台机器可控"></a>vcenter x.x.x.8 服务器1369台机器可控</h5><p>​    这里同样使用了vcxxx用户登录了 x.x.x.8 服务器的vcenter，发现有107台主机和1369台虚拟机可控。</p>
-<p><img src="/attach/image/image-20210803154710306.png" alt="image-20210803154710306"></p>
-<p><img src="/attach/image/image-20210803155556071.png" alt="image-20210803155556071"></p>
-<h5 id="可登录ansible自动化运维服务器，使所有linux服务器沦陷"><a href="#可登录ansible自动化运维服务器，使所有linux服务器沦陷" class="headerlink" title="可登录ansible自动化运维服务器，使所有linux服务器沦陷"></a>可登录ansible自动化运维服务器，使所有linux服务器沦陷</h5><p>​    劫持会话后发现服务器桌面上securecrt中还登录了x.x.x.148 （ansible，同B段）自动化运维工具,该服务器可以免密登录所有能通的linux机器,至此所有linux服务器沦陷（可登录控制jumpserver服务器）。</p>
-<p><img src="/attach/image/image-20210803161630015.png" alt="image-20210803161630015"></p>
-<p>​    其登录过的部分记录</p>
-<p><img src="/attach/image/image-20210803162548212.png" alt="image-20210803162548212"></p>
-<h5 id="通过ansible登录jumpserver堡垒机x-x-x-187（同B段）"><a href="#通过ansible登录jumpserver堡垒机x-x-x-187（同B段）" class="headerlink" title="通过ansible登录jumpserver堡垒机x.x.x.187（同B段）"></a>通过ansible登录jumpserver堡垒机x.x.x.187（同B段）</h5><p><img src="/attach/image/image-20210803163613495.png" alt="image-20210803163613495"></p>
-<p>​    通过堡垒机做代理,利用之前获取到的域内高权限通用用户应该可以登录除了域控外的绝大部分域内windows服务器,由于风险原因,不再做深入验证。</p>
-<p><img src="/attach/image/image-20210803163854668.png" alt="image-20210803163854668"></p>
-<p>​    登录堡垒机数据库,可以操作堡垒机数据库重置管理员密码和手机号登录jumpserver堡垒机系统,进而接管堡垒机里面的服务器,由于风险原因,没有做具体操作。</p>
-<h5 id="在x-x-x-8服务器上劫持vcchow用户会话可登录web版vcenter-x-x-x-11"><a href="#在x-x-x-8服务器上劫持vcchow用户会话可登录web版vcenter-x-x-x-11" class="headerlink" title="在x.x.x.8服务器上劫持vcchow用户会话可登录web版vcenter x.x.x.11"></a>在x.x.x.8服务器上劫持vcchow用户会话可登录web版vcenter x.x.x.11</h5><p>​    劫持vcchow用户会话切到桌面获得web版vcenter x.x.x.11 权限,可管控5500台虚拟机和300台服务器(其中包含dc等重要服务器,可控制所有机器导hash等。)</p>
-<p><img src="/attach/image/image-20210803165808400.png" alt="image-20210803165808400"></p>
-<p>​    域控机器截图</p>
-<p>​    x.x.x.32</p>
-<p><img src="/attach/image/image-20210803171427423.png" alt="image-20210803171427423"></p>
-<p><img src="/attach/image/image-20210803172338810.png" alt="image-20210803172338810"></p>
-<p>​    x.x.x.31</p>
-<p><img src="/attach/image/image-20210803172120228.png" alt="image-20210803172120228"></p>
-<p><img src="/attach/image/image-20210803172226888.png" alt="image-20210803172226888"></p>
-<h5 id="拷贝域控机器镜像并抓取hash"><a href="#拷贝域控机器镜像并抓取hash" class="headerlink" title="拷贝域控机器镜像并抓取hash"></a>拷贝域控机器镜像并抓取hash</h5><p><img src="/attach/image/image-20210803172756336.png" alt="image-20210803172756336"></p>
-<p>​    抓取hash操作，这里我使用的是volatility，命令如下：</p>
-<p>​    <code>volatility_2.6_win64_standalone.exe -f xxxxx.vmsn --profile=Win2016x64_14393 lsadump</code></p>
-<p>​    利用镜像抓取x.x.x.31的hash</p>
-<p><img src="/attach/image/image-20210803173056441.png" alt="image-20210803173056441"></p>
-<p>​    不过因为一些特殊原因，无法抓取到明文，可能明文加固了，也可能管理员不在线，所以还无法登录dc。</p>
-<p>​    当时主要是和域管在打赌，说只要冲下dc就可以获得一顿烧烤，大家就一心思冲dc，后来听杨哥说快照挂盘冲也可以搞密码，当时也是由于时间的原因，大家就放弃了，整理了下成果就提交报告了。</p>
-<p>​    至此这次内网漫游就由此告终了。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    本次突破点就是rdp会话劫持和vc管理员未注销用户可以切到其桌面，然后获得vc权限控制了90%的windows服务器和全部linux服务器。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/09/%E4%B8%80%E6%AC%A1%E9%80%9A%E8%BF%87RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81%E7%BB%88%E7%BB%93%E7%9A%84%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

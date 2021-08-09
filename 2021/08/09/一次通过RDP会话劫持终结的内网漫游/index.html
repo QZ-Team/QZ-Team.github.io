@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"blog.rizhan.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="前言​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。 RDP会话劫持​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。">
+  <meta name="description" content="前言​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一次通过RDP会话劫持终结的内网漫游">
 <meta property="og:url" content="https://blog.rizhan.icu/2021/08/09/%E4%B8%80%E6%AC%A1%E9%80%9A%E8%BF%87RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81%E7%BB%88%E7%BB%93%E7%9A%84%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/index.html">
 <meta property="og:site_name" content="奇安信Z-Team技术博客">
-<meta property="og:description" content="前言​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。 RDP会话劫持​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。">
+<meta property="og:description" content="前言​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803111518787.png">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803143858228.png">
@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803172756336.png">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803173056441.png">
 <meta property="article:published_time" content="2021-08-09T03:29:26.000Z">
-<meta property="article:modified_time" content="2021-08-09T03:38:57.350Z">
+<meta property="article:modified_time" content="2021-08-09T03:42:50.144Z">
 <meta property="article:author" content="QAX Z-Team">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.rizhan.icu/attach/image/image-20210803111518787.png">
@@ -206,7 +206,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-09 11:29:26 / Modified: 11:38:57" itemprop="dateCreated datePublished" datetime="2021-08-09T11:29:26+08:00">2021-08-09</time>
+              <time title="Created: 2021-08-09 11:29:26 / Modified: 11:42:50" itemprop="dateCreated datePublished" datetime="2021-08-09T11:29:26+08:00">2021-08-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,6 +237,9 @@
 
       
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。</p>
+<span id="more"></span>
+
+
 <h3 id="RDP会话劫持"><a href="#RDP会话劫持" class="headerlink" title="RDP会话劫持"></a>RDP会话劫持</h3><p>​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。正常情况下，切换会话时需要提供登录密码，但在SYSTEM权限下可够绕过验证，无密码实现未授权登录。</p>
 <p>​    RDP劫持是要在system权限下进行的，如果有密码的话也可以不用system，我一般用psexec提到system下，也可以用shift的com劫持，这样从3389外面登录框就是system，或者计划任务等都可以。</p>
 <h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>​    本次项目是通过之前内网的信息收集，获取到了一个域内高权限用户，这个用户之前是域管用户组里的，不过被移除组外但是权限还在并可以登录域内300多台windows服务器，本次会话劫持就是用在其中的服务器上。</p>
