@@ -20,28 +20,53 @@
     var CONFIG = {"hostname":"blog.rizhan.icu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="奇安信Z-Team技术博客">
-<meta property="og:url" content="https://blog.rizhan.icu/index.html">
+  <meta name="description" content="前言​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。 RDP会话劫持​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次通过RDP会话劫持终结的内网漫游">
+<meta property="og:url" content="https://blog.rizhan.icu/2021/08/09/%E4%B8%80%E6%AC%A1%E9%80%9A%E8%BF%87RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81%E7%BB%88%E7%BB%93%E7%9A%84%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/index.html">
 <meta property="og:site_name" content="奇安信Z-Team技术博客">
+<meta property="og:description" content="前言​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。 RDP会话劫持​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803111518787.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803143858228.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803145614581.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803144817625.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803150610889.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803153841797.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803154050853.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803154710306.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803155556071.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803161630015.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803162548212.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803163613495.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803163854668.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803165808400.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803171427423.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803172338810.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803172120228.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803172226888.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803172756336.png">
+<meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803173056441.png">
+<meta property="article:published_time" content="2021-08-09T03:29:26.000Z">
+<meta property="article:modified_time" content="2021-08-09T03:38:57.350Z">
 <meta property="article:author" content="QAX Z-Team">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.rizhan.icu/attach/image/image-20210803111518787.png">
 
-<link rel="canonical" href="https://blog.rizhan.icu/">
+<link rel="canonical" href="https://blog.rizhan.icu/2021/08/09/%E4%B8%80%E6%AC%A1%E9%80%9A%E8%BF%87RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81%E7%BB%88%E7%BB%93%E7%9A%84%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>奇安信Z-Team技术博客</title>
+  <title>一次通过RDP会话劫持终结的内网漫游 | 奇安信Z-Team技术博客</title>
   
 
 
@@ -150,9 +175,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -168,10 +194,9 @@
       <meta itemprop="name" content="奇安信Z-Team技术博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/09/%E4%B8%80%E6%AC%A1%E9%80%9A%E8%BF%87RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81%E7%BB%88%E7%BB%93%E7%9A%84%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" class="post-title-link" itemprop="url">一次通过RDP会话劫持终结的内网漫游</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          一次通过RDP会话劫持终结的内网漫游
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -194,6 +219,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -204,7 +236,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>​    之前出差去客户现场做红队评估项目，拿到了一个域内高权限账户登录到了Vcenter服务器（其中一个Vcenter中就包含域控），却没有Vcenter的账户密码无法进入Vcenter，后发现多个用户登录后未注销，于是想到了韬哥前段时间分享的rdp劫持技术，这样劫持后就可以切到他的桌面了。</p>
 <h3 id="RDP会话劫持"><a href="#RDP会话劫持" class="headerlink" title="RDP会话劫持"></a>RDP会话劫持</h3><p>​    Windows系统下，tscon或任务管理器右键可被用来切换远程桌面的会话。正常情况下，切换会话时需要提供登录密码，但在SYSTEM权限下可够绕过验证，无密码实现未授权登录。</p>
 <p>​    RDP劫持是要在system权限下进行的，如果有密码的话也可以不用system，我一般用psexec提到system下，也可以用shift的com劫持，这样从3389外面登录框就是system，或者计划任务等都可以。</p>
 <h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>​    本次项目是通过之前内网的信息收集，获取到了一个域内高权限用户，这个用户之前是域管用户组里的，不过被移除组外但是权限还在并可以登录域内300多台windows服务器，本次会话劫持就是用在其中的服务器上。</p>
@@ -254,262 +286,47 @@
 <p>​    至此这次内网漫游就由此告终了。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    本次突破点就是rdp会话劫持和vc管理员未注销用户可以切到其桌面，然后获得vc权限控制了90%的windows服务器和全部linux服务器。</p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="QAX Z-Team">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="奇安信Z-Team技术博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">Exchange渗透总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-06 21:40:35" itemprop="dateCreated datePublished" datetime="2021-08-06T21:40:35+08:00">2021-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-09 11:15:08" itemprop="dateModified" datetime="2021-08-09T11:15:08+08:00">2021-08-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">渗透测试</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>实验环境：DC (10.10.10.10)  windows server 2012 R2</p>
-<p>Exchange Server（10.10.10.40）windows server 2012 R2  Exchange 2016 CU18 </p>
-<p>辅助DC (10.10.10.20)</p>
-<p>攻击机IP (10.10.10.142) </p>
-<p>域：c0okb.cn（域用户：<a href="mailto:&#116;&#x65;&#x73;&#116;&#x4d;&#101;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#111;&#107;&#98;&#x2e;&#x63;&#x6e;">&#116;&#x65;&#x73;&#116;&#x4d;&#101;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#111;&#107;&#98;&#x2e;&#x63;&#x6e;</a>，<a href="mailto:&#x61;&#100;&#x6d;&#x69;&#110;&#x69;&#115;&#116;&#114;&#97;&#116;&#x6f;&#x72;&#x40;&#x63;&#x30;&#x6f;&#x6b;&#x62;&#46;&#99;&#x6e;">&#x61;&#100;&#x6d;&#x69;&#110;&#x69;&#115;&#116;&#114;&#97;&#116;&#x6f;&#x72;&#x40;&#x63;&#x30;&#x6f;&#x6b;&#x62;&#46;&#99;&#x6e;</a>）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>西部基地
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://blog.rizhan.icu/2021/08/09/%E4%B8%80%E6%AC%A1%E9%80%9A%E8%BF%87RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81%E7%BB%88%E7%BB%93%E7%9A%84%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8/" title="一次通过RDP会话劫持终结的内网漫游">https://blog.rizhan.icu/2021/08/09/一次通过RDP会话劫持终结的内网漫游/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="QAX Z-Team">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="奇安信Z-Team技术博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/" class="post-title-link" itemprop="url">内存加载CS-Stageless进行免杀</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-06 21:10:48 / Modified: 23:06:34" itemprop="dateCreated datePublished" datetime="2021-08-06T21:10:48+08:00">2021-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%88%E7%AB%AF%E5%AF%B9%E6%8A%97/" itemprop="url" rel="index"><span itemprop="name">终端对抗</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>​        在红队评估中，木马的免杀效果往往决定了一次完美的钓鱼的成功与否，当然这里不仅仅是钓鱼，木马是我们最常用的一种权限维持的手段。而cs生成木马免杀更是老生常谈的话题，cs 生成的shellcode ，最常用的免杀手段就是，加载器和shellcode分离，在过静态一直保持着较高的成功免杀概率。</p>
-<p>​        为啥说免杀概率？总所周知，免杀一直都有着很玄学的色彩，当然这也是和杀软复杂的检测机制有关，主要是杀软都是不开源的，我们测试免杀性都是通过黑盒测试，只能一个个去试，去猜测免杀机制！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/06/%E5%86%85%E5%AD%98%E5%8A%A0%E8%BD%BDCS-Stageless%E8%BF%9B%E8%A1%8C%E5%85%8D%E6%9D%80/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="QAX Z-Team">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="奇安信Z-Team技术博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/" class="post-title-link" itemprop="url">利用代码审计突破网络隔离</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-06 19:05:51 / Modified: 23:06:39" itemprop="dateCreated datePublished" datetime="2021-08-06T19:05:51+08:00">2021-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">实战项目</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">代码审计</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>​        一次红队项目中，通过反序列化拿下入口点webshell，经过信息收集发现该机器在dmz区域，且c段内只有一台机器，猜测应该是防火墙做了连接限制，如果突破不了dmz区域，这个点就毫无作用。后续对webshell进行本机信息收集，发现了一个感兴趣的进程”b*agent.exe”,通过检索该进程配置文件定位到该agent服务端，经过测试连接，竟然能直接跨网段访问到it运维人员用于监控网络资产的设备主页，从设备的用途上可以分析出大概率这台设备的ACL很好，经过坚持不懈的努力成功登陆（不要问，问就是弱口令），通过监控面板看到了很多其他网段的关键主机和设备，如果能打下来这个监控设备的点，就能突破网络隔离，去探索新世界了！</p>
-<p>​        黑盒测过没发现能直接打死的漏洞，只能走上找寻源码的不归路。通过fofa、google搜了下，公网用的还不少，但打旁站或者供应商成本过于大，结合在供应商主页找到了设备的系统名称，拿着关键字最后在某盘找到了几套与目标版本比较近的安装包 ：）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/06/%E5%88%A9%E7%94%A8%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AA%81%E7%A0%B4%E7%BD%91%E7%BB%9C%E9%9A%94%E7%A6%BB/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/" rel="prev" title="Exchange渗透总结">
+      <i class="fa fa-chevron-left"></i> Exchange渗透总结
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -562,6 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81"><span class="nav-number">2.</span> <span class="nav-text">RDP会话劫持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%AB%E6%8C%81-x-x-x-8%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%BC%9A%E8%AF%9D"><span class="nav-number">3.1.</span> <span class="nav-text">劫持 x.x.x.8服务器的会话</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%A8%E5%8A%AB%E6%8C%81%E5%90%8E%E7%9A%84vcxxx%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%99%BB%E5%BD%95-vcenter-x-x-x-171-%E6%9C%8D%E5%8A%A1%E5%99%A8485%E5%8F%B0%E6%9C%BA%E5%99%A8%E5%8F%AF%E6%8E%A7"><span class="nav-number">3.1.1.</span> <span class="nav-text">用劫持后的vcxxx用户权限登录 vcenter x.x.x.171 服务器485台机器可控</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#vcenter-x-x-x-8-%E6%9C%8D%E5%8A%A1%E5%99%A81369%E5%8F%B0%E6%9C%BA%E5%99%A8%E5%8F%AF%E6%8E%A7"><span class="nav-number">3.1.2.</span> <span class="nav-text">vcenter x.x.x.8 服务器1369台机器可控</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%AF%E7%99%BB%E5%BD%95ansible%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E4%BD%BF%E6%89%80%E6%9C%89linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%B2%A6%E9%99%B7"><span class="nav-number">3.1.3.</span> <span class="nav-text">可登录ansible自动化运维服务器，使所有linux服务器沦陷</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%9A%E8%BF%87ansible%E7%99%BB%E5%BD%95jumpserver%E5%A0%A1%E5%9E%92%E6%9C%BAx-x-x-187%EF%BC%88%E5%90%8CB%E6%AE%B5%EF%BC%89"><span class="nav-number">3.1.4.</span> <span class="nav-text">通过ansible登录jumpserver堡垒机x.x.x.187（同B段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9C%A8x-x-x-8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%8A%AB%E6%8C%81vcchow%E7%94%A8%E6%88%B7%E4%BC%9A%E8%AF%9D%E5%8F%AF%E7%99%BB%E5%BD%95web%E7%89%88vcenter-x-x-x-11"><span class="nav-number">3.1.5.</span> <span class="nav-text">在x.x.x.8服务器上劫持vcchow用户会话可登录web版vcenter x.x.x.11</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%9F%9F%E6%8E%A7%E6%9C%BA%E5%99%A8%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8A%93%E5%8F%96hash"><span class="nav-number">3.1.6.</span> <span class="nav-text">拷贝域控机器镜像并抓取hash</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
