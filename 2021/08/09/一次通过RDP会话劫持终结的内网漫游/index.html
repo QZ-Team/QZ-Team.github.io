@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803172756336.png">
 <meta property="og:image" content="https://blog.rizhan.icu/attach/image/image-20210803173056441.png">
 <meta property="article:published_time" content="2021-08-09T03:29:26.000Z">
-<meta property="article:modified_time" content="2021-08-09T03:42:50.144Z">
+<meta property="article:modified_time" content="2021-08-09T05:29:55.737Z">
 <meta property="article:author" content="QAX Z-Team">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.rizhan.icu/attach/image/image-20210803111518787.png">
@@ -206,7 +206,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-09 11:29:26 / Modified: 11:42:50" itemprop="dateCreated datePublished" datetime="2021-08-09T11:29:26+08:00">2021-08-09</time>
+              <time title="Created: 2021-08-09 11:29:26 / Modified: 13:29:55" itemprop="dateCreated datePublished" datetime="2021-08-09T11:29:26+08:00">2021-08-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,8 +284,8 @@
 <p>​    <code>volatility_2.6_win64_standalone.exe -f xxxxx.vmsn --profile=Win2016x64_14393 lsadump</code></p>
 <p>​    利用镜像抓取x.x.x.31的hash</p>
 <p><img src="/attach/image/image-20210803173056441.png" alt="image-20210803173056441"></p>
-<p>​    不过因为一些特殊原因，无法抓取到明文，可能明文加固了，也可能管理员不在线，所以还无法登录dc。</p>
-<p>​    当时主要是和域管在打赌，说只要冲下dc就可以获得一顿烧烤，大家就一心思冲dc，后来听杨哥说快照挂盘冲也可以搞密码，当时也是由于时间的原因，大家就放弃了，整理了下成果就提交报告了。</p>
+<p>​    不过因为一些特殊原因，无法抓取到明文，可能管理员不在线，所以还无法登录dc。</p>
+<p>​    当时主要是和域管在打赌，说只要冲下dc就可以获得一顿烧烤，大家就一心思冲dc，后来听说快照挂盘冲也可以搞密码，最后因项目时间关系,没能成功控下域控,后续思路可以通过vcenter将域控导出成,vmdk,然后新建虚拟机挂盘导ntds.或者导出其他关键机器的hash,然后在上面抓取域控登录账号密码等等。</p>
 <p>​    至此这次内网漫游就由此告终了。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    本次突破点就是rdp会话劫持和vc管理员未注销用户可以切到其桌面，然后获得vc权限控制了90%的windows服务器和全部linux服务器。</p>
 
