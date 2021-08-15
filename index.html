@@ -156,6 +156,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/15/%E4%BB%8E0%E5%88%B0DA-PetitPotam-ADCS-Relay-Attack%E5%A4%8D%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QAX Z-Team">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="奇安信Z-Team技术博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/15/%E4%BB%8E0%E5%88%B0DA-PetitPotam-ADCS-Relay-Attack%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">从 0 到 DA：PetitPotam + AD CS Relay Attack</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-08-15 21:41:09 / Modified: 21:47:04" itemprop="dateCreated datePublished" datetime="2021-08-15T21:41:09+08:00">2021-08-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">漏洞复现</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><a target="_blank" rel="noopener" href="https://twitter.com/harmj0y">@harmj0y</a> 和 <a target="_blank" rel="noopener" href="https://twitter.com/tifkin_">@tifkin_</a> 在 Black Hat USA 2021 中发表了  <a target="_blank" rel="noopener" href="https://www.specterops.io/assets/resources/Certified_Pre-Owned.pdf">Certified Pre-Owned: Abusing Active Directory Certificate Services</a>，披露了 AD CS（Active Directory Certificate Services,  Active Directory 证书服务）中存在的一些漏洞攻击面及利用方法。其中一种默认的错误配置 <code>ESC8</code> - NTLM 中继到 AD CS HTTP 端点，允许攻击者将用户/机器身份验证中继到 AD CS 服务器并获取用户/机器证书，获取证书后可以为用户/机器请求 TGT / TGS 票据，获取相应的权限在域内开展活动。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/15/%E4%BB%8E0%E5%88%B0DA-PetitPotam-ADCS-Relay-Attack%E5%A4%8D%E7%8E%B0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://blog.rizhan.icu/2021/08/09/%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E6%A1%86%E6%9E%B6-woodpecker-framework/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -609,14 +684,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
